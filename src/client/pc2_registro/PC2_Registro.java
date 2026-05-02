@@ -19,7 +19,7 @@ public class PC2_Registro {
         System.out.println("   PC2 - REGISTRO DE TICKETS - HELP DESK ");
         System.out.println("=========================================");
 
-        // ── Datos del usuario (mismas variables de Ticket.java) ──────────────
+        // ── Datos del usuario ──────────────
         System.out.print("Ingrese su DPI: ");
         String dpi = scanner.nextLine();
 
@@ -50,7 +50,7 @@ public class PC2_Registro {
         System.out.print("Describa brevemente su problema: ");
         String motivo = scanner.nextLine();
 
-        // ── Crear el ticket (constructor de Ticket.java) ─────────────────────
+        // ── Crear el ticket ─────────────────────
         Ticket ticket = new Ticket(dpi, nombreApellido, motivo, tipo);
 
         // ── Mostrar clasificación antes de enviar ────────────────────────────
