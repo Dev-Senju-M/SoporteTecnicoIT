@@ -12,21 +12,18 @@ public class PC2_Registro {
     private static final String HOST   = "localhost";
     private static final int    PUERTO = 5000;
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void registrar(Scanner scanner) {
 
-        System.out.println("=========================================");
-        System.out.println("   PC2 - REGISTRO DE TICKETS - HELP DESK ");
-        System.out.println("=========================================");
+        System.out.println("\n--- Registro de Nuevo Ticket ---");
 
-        // ── Datos del usuario ──────────────
+        // ── Datos del usuario ────────────────────────────────────────────────
         System.out.print("Ingrese su DPI: ");
         String dpi = scanner.nextLine();
 
         System.out.print("Ingrese su nombre completo: ");
         String nombreApellido = scanner.nextLine();
 
-        // ── Selección del tipo de problema ───────────────────────────────────
+        // ── Tipo de problema ─────────────────────────────────────────────────
         System.out.println("\nTipo de problema:");
         System.out.println("  1. Hardware");
         System.out.println("  2. Software");
@@ -35,40 +32,45 @@ public class PC2_Registro {
         System.out.println("  5. Accesos/Permisos");
         System.out.println("  6. Otro");
         System.out.print("Seleccione una opcion: ");
-        int opcion = Integer.parseInt(scanner.nextLine());
+
+        int opcion;
+        try {
+            opcion = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Opcion invalida, se asignara tipo Otro.");
+            opcion = 6;
+        }
 
         String tipo;
         switch (opcion) {
-            case 1: tipo = "Hardware";          break;
-            case 2: tipo = "Software";          break;
-            case 3: tipo = "Red/Internet";      break;
-            case 4: tipo = "Servidor";          break;
-            case 5: tipo = "Accesos/Permisos";  break;
-            default: tipo = "Otro";             break;
+            case 1: tipo = "Hardware";         break;
+            case 2: tipo = "Software";         break;
+            case 3: tipo = "Red/Internet";     break;
+            case 4: tipo = "Servidor";         break;
+            case 5: tipo = "Accesos/Permisos"; break;
+            default: tipo = "Otro";            break;
         }
 
         System.out.print("Describa brevemente su problema: ");
         String motivo = scanner.nextLine();
 
-        // ── Crear el ticket ─────────────────────
+        // ── Crear ticket ─────────────────────────────────────────────────────
         Ticket ticket = new Ticket(dpi, nombreApellido, motivo, tipo);
 
-        // ── Mostrar clasificación antes de enviar ────────────────────────────
+        // ── Mostrar clasificacion ────────────────────────────────────────────
         Clasificador.mostrarClasificacion(ticket);
 
-        // ── Enviar ticket al servidor PC1 por Socket ─────────────────────────
+        // ── Enviar al servidor PC1 ───────────────────────────────────────────
         try {
-            Socket socket = new Socket(HOST, PUERTO);
+            Socket socket          = new Socket(HOST, PUERTO);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(ticket);
             out.flush();
             socket.close();
-            System.out.println("\n✅ Ticket enviado correctamente al servidor.");
+            System.out.println("\nTicket enviado correctamente.");
             System.out.println("   Sera atendido en: " + Clasificador.getDestino(tipo));
         } catch (Exception e) {
-            System.out.println("❌ Error al conectar con el servidor: " + e.getMessage());
+            System.out.println("Error al conectar con el servidor: " + e.getMessage());
         }
-
-        scanner.close();
     }
 }
