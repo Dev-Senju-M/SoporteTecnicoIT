@@ -14,9 +14,8 @@ public class Ticket implements Serializable {
     private long tiempoAtencion;
     private long tiempoFinal;
     
-    public Ticket(String dpi, String nombreApellido, String motivo, String tipo) {
+    public Ticket(String dpi, String motivo, String tipo) {
         this.dpi = dpi;
-        this.nombreApellido = nombreApellido;
         this.motivo = motivo;
         this.tipo = tipo;
         this.tiempoEntrada = System.currentTimeMillis();

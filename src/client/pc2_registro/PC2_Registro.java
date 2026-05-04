@@ -20,9 +20,6 @@ public class PC2_Registro {
         System.out.print("Ingrese su DPI: ");
         String dpi = scanner.nextLine();
 
-        System.out.print("Ingrese su nombre completo: ");
-        String nombreApellido = scanner.nextLine();
-
         // ── Tipo de problema ─────────────────────────────────────────────────
         System.out.println("\nTipo de problema:");
         System.out.println("  1. Hardware");
@@ -55,7 +52,7 @@ public class PC2_Registro {
         String motivo = scanner.nextLine();
 
         // ── Crear ticket ─────────────────────────────────────────────────────
-        Ticket ticket = new Ticket(dpi, nombreApellido, motivo, tipo);
+        Ticket ticket = new Ticket(dpi, motivo, tipo);
 
         // ── Mostrar clasificacion ────────────────────────────────────────────
         Clasificador.mostrarClasificacion(ticket);
