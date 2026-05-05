@@ -1,6 +1,7 @@
 module sistema.sistemadesoportetecnicoit {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens sistema.sistemadesoportetecnicoit to javafx.fxml;
