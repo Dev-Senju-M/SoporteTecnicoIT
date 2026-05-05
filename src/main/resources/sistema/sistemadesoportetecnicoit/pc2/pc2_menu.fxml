@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<fx:root alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="15.0" style="-fx-background-color: #1e1e1e; -fx-padding: 30;" type="VBox" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistema.sistemadesoportetecnicoit.pc2.MenuController">
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="15.0" style="-fx-background-color: #1e1e1e; -fx-padding: 30;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistema.sistemadesoportetecnicoit.pc2.MenuController">
    <children>
       <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00c8ff;" text="SISTEMA DE SOPORTE TÉCNICO IT" />
       <Label style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #aaaaaa;" text="PC2 - Registro de Tickets" />
@@ -13,4 +13,4 @@
       <Button fx:id="btnHistorial" mnemonicParsing="false" onAction="#abrirHistorial" prefHeight="45.0" prefWidth="280.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;" text="Consultar Historial" />
       <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#salir" prefHeight="45.0" prefWidth="280.0" style="-fx-background-color: #3c3c3c; -fx-text-fill: #cccccc; -fx-background-radius: 8;" text="Salir" />
    </children>
-</fx:root>
+</VBox>
