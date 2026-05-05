@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="400" spacing="15" style="-fx-background-color: #2b2b2b;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistema.sistemadesoportetecnicoit.pc2.RegistroController">
+
+    <padding>
+        <Insets bottom="25" left="25" right="25" top="25" />
+    </padding>
+
+    <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00c8ff;" text="Registrar Nuevo Ticket" />
+
+    <GridPane hgap="10" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" />
+            <ColumnConstraints minWidth="220" />
+        </columnConstraints>
+
+        <Label style="-fx-text-fill: #bbbbbb; -fx-font-size: 12px;" text="DPI:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="txtDpi" style="-fx-background-color: #3c3c3c; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label style="-fx-text-fill: #bbbbbb; -fx-font-size: 12px;" text="Tipo de problema:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <ComboBox fx:id="cmbTipo" onAction="#actualizarDestino" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label style="-fx-text-fill: #bbbbbb; -fx-font-size: 12px;" text="Motivo:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="txtMotivo" style="-fx-background-color: #3c3c3c; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label style="-fx-text-fill: #bbbbbb; -fx-font-size: 12px;" text="Será atendido en:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="lblDestino" style="-fx-text-fill: #00c8ff; -fx-font-size: 13px; -fx-font-weight: bold;" text="PC3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+
+    </GridPane>
+
+    <Button onAction="#enviarTicket" prefHeight="40" prefWidth="260" style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 6;" text="Enviar Ticket" />
+
+</VBox>

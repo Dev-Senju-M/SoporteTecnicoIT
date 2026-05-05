@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="15" style="-fx-background-color: #1e1e1e;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistema.sistemadesoportetecnicoit.pc2.MenuController">
+
+    <padding>
+        <Insets bottom="40" left="40" right="40" top="40" />
+    </padding>
+
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00c8ff;" text="SISTEMA DE SOPORTE TÉCNICO IT" />
+
+    <Label style="-fx-font-size: 13px; -fx-text-fill: #aaaaaa;" text="PC2 - Registro de Tickets" />
+
+    <Button fx:id="btnRegistrar" onAction="#abrirRegistro" prefHeight="45" prefWidth="280" style="-fx-background-color: #007acc; -fx-text-fill: black; -fx-font-size: 13px; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 6;" text="📋  Registrar Nuevo Ticket" />
+
+    <Button fx:id="btnHistorial" onAction="#abrirHistorial" prefHeight="45" prefWidth="280" style="-fx-background-color: #28a745; -fx-text-fill: black; -fx-font-size: 13px; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 6;" text="🔍  Consultar Historial" />
+
+    <Button fx:id="btnSalir" onAction="#salir" prefHeight="35" prefWidth="280" style="-fx-background-color: #3c3c3c; -fx-text-fill: #cccccc; -fx-font-size: 12px; -fx-cursor: hand; -fx-background-radius: 6;" text="Salir" />
+
+</VBox>
