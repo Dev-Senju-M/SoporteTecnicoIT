@@ -56,7 +56,7 @@ public class RegistroController {
             return;
         }
 
-        Ticket ticket = new Ticket(dpi, nombre, motivo, tipo);
+        Ticket ticket = new Ticket(dpi, nombre, motivo, tipo,true);
         Clasificador.mostrarClasificacion(ticket);
 
         mostrarAlerta(Alert.AlertType.INFORMATION,

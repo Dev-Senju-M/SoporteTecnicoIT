@@ -14,13 +14,16 @@ public class Ticket implements Serializable {
     private long tiempoEntrada;
     private long tiempoAtencion;
     private long tiempoFinal;
+    private Boolean prioridad;
 
-    public Ticket(String dpi, String nombreApellido, String motivo, String tipo) {
+
+    public Ticket(String dpi, String nombreApellido, String motivo, String tipo, Boolean prioridad) {
         this.dpi = dpi;
         this.nombreApellido = nombreApellido;
         this.motivo = motivo;
         this.tipo = tipo;
         this.tiempoEntrada = System.currentTimeMillis();
+        this.prioridad = prioridad;
     }
 
     public String getFechaHoraAtencion() {
@@ -55,6 +58,8 @@ public class Ticket implements Serializable {
     public void   setTiempoAtencion(long t){ this.tiempoAtencion = t; }
     public long   getTiempoFinal()         { return tiempoFinal; }
     public void   setTiempoFinal(long t)   { this.tiempoFinal = t; }
+    public Boolean  getPrioridad()          { return prioridad; }
+    public void   setPrioridad(Boolean b) { this.prioridad = b; }
 
     @Override
     public String toString() {
