@@ -176,7 +176,7 @@ SoporteIT/
 
 ## Requisitos Previos
 
-- **JDK 17** o superior
+- **JDK 20** o superior
 - **Maven 3.8+**
 - **Git**
 - 5 PCs en la misma red (o una sola PC para pruebas locales con `localhost`)
