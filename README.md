@@ -287,7 +287,7 @@ Los archivos de prueba se encuentran en `docs/pruebas/`:
 
 ## Repositorio
 
-[Enlace al repositorio en GitHub]
+https://github.com/Dev-Senju-M/SoporteTecnicoIT
 
 ---
 
