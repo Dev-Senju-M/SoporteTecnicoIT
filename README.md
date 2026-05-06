@@ -117,8 +117,8 @@ El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, do
 
 ## Tecnologías
 
-- **Lenguaje:** Java 17
-- **UI:** Swing
+- **Lenguaje:** Java 20+
+- **UI:** JavaFX
 - **Build Tool:** Maven
 - **Comunicación:** Sockets TCP
 - **Concurrencia:** Hilos, `synchronized`, `ReentrantLock`
