@@ -36,10 +36,9 @@ El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, do
 
 | Nombre | Carné | Rol |
 |---|---|---|
-| [Nombre integrante 1] | [Carné] | PC1 — Servidor |
-| Senju れ | [Carné] | PC2 — Registro |
-| [Nombre integrante 3] | [Carné] | [Rol] |
-| [Nombre integrante 4] | [Carné] | [Rol] |
+| Erick Alexander Palomo Mazariegos | 1290-24-25790 | PC1 — Servidor |
+| Bryant Alexander To Castillo | 1290-24-12239 | PC2 — Registro |
+| Marcos Daniel Valle Larios | 1290-24-16029 | [Rol] |
 
 **Universidad:** [Nombre de la universidad]
 **Curso:** Estructuras de Datos
