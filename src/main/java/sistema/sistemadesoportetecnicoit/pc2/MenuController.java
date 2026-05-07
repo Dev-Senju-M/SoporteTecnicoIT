@@ -3,6 +3,7 @@ package sistema.sistemadesoportetecnicoit.pc2;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import sistema.sistemadesoportetecnicoit.PC2Application;
 import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 
 public class MenuController {

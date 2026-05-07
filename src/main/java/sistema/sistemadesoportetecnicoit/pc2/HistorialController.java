@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import sistema.sistemadesoportetecnicoit.PC2Application;
 import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
 import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;

@@ -1,4 +1,4 @@
-package sistema.sistemadesoportetecnicoit.pc2;
+package sistema.sistemadesoportetecnicoit;
 
 public class PC2Launcher {
     public static void main(String[] args) {

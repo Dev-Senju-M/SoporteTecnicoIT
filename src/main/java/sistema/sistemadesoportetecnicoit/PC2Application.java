@@ -1,4 +1,4 @@
-package sistema.sistemadesoportetecnicoit.pc2;
+package sistema.sistemadesoportetecnicoit;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,7 @@ public class PC2Application extends Application {
 
     public static void cargarVista(String fxml){
         try {
-            URL url = PC2Application.class.getResource(fxml);
+            URL url = PC2Application.class.getResource("pc2/" + fxml);
             if (url == null) throw new IOException("No se encontro el FXML: " + fxml);
 
             FXMLLoader loader = new FXMLLoader(url);

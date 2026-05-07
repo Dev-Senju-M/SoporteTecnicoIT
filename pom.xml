@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.12.1</junit.version>
         <mainClass>
-            sistema.sistemadesoportetecnicoit.pc2.PC2Launcher
+            sistema.sistemadesoportetecnicoit.PC2Launcher
         </mainClass>
     </properties>
 
@@ -63,7 +63,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                sistema.sistemadesoportetecnicoit.pc2.PC2Launcher
+                                sistema.sistemadesoportetecnicoit.PC2Launcher
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
