@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox prefHeight="500.0" prefWidth="720.0" spacing="12.0"
+      style="-fx-background-color: #2b2b2b;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="sistema.sistemadesoportetecnicoit.pc2.HistorialController">
+    <padding>
+        <Insets top="20.0" right="25.0" bottom="20.0" left="25.0"/>
+    </padding>
 
-</AnchorPane>
+    <children>
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00c8ff;"
+               text="Historial de Tickets por DPI"/>
+
+        <Label style="-fx-font-size: 11px; -fx-text-fill: #888888;"
+               text="La consulta se realiza al servidor central (PC1) que mantiene el arbol B+."/>
+
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <children>
+                <Label style="-fx-text-fill: #bbbbbb; -fx-font-size: 12px;" text="DPI:"/>
+                <TextField fx:id="txtDpiBuscar" prefWidth="200.0" promptText="13 digitos"
+                           style="-fx-background-color: #3c3c3c; -fx-text-fill: white;"/>
+                <Button onAction="#buscar"
+                        prefHeight="32.0" prefWidth="120.0"
+                        style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;"
+                        text="Buscar"/>
+                <Button onAction="#limpiar"
+                        prefHeight="32.0" prefWidth="100.0"
+                        style="-fx-background-color: #555555; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;"
+                        text="Limpiar"/>
+            </children>
+        </HBox>
+
+        <TableView fx:id="tablaTickets" prefHeight="320.0"
+                   style="-fx-background-color: #3c3c3c; -fx-control-inner-background: #3c3c3c; -fx-text-fill: white;">
+            <columns>
+                <TableColumn fx:id="colTicketId" prefWidth="90.0"  text="Ticket"/>
+                <TableColumn fx:id="colTipo"     prefWidth="130.0" text="Tipo"/>
+                <TableColumn fx:id="colMotivo"   prefWidth="200.0" text="Motivo"/>
+                <TableColumn fx:id="colTecnico"  prefWidth="120.0" text="Atendido por"/>
+                <TableColumn fx:id="colFecha"    prefWidth="160.0" text="Fecha de atencion"/>
+            </columns>
+        </TableView>
+
+        <Label fx:id="lblEstado" style="-fx-text-fill: #aaaaaa; -fx-font-size: 11px;" text=" "/>
+
+        <HBox alignment="CENTER_LEFT">
+            <children>
+                <Button onAction="#regresarMenu"
+                        prefHeight="34.0" prefWidth="120.0"
+                        style="-fx-background-color: #555555; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;"
+                        text="Regresar"/>
+            </children>
+        </HBox>
+    </children>
+</VBox>

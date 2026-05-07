@@ -6,94 +6,134 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
+import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
+import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
+import sistema.sistemadesoportetecnicoit.shared.utils.Clasificador;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RegistroController {
 
     @FXML private TextField txtDpi;
+    @FXML private TextField txtNombre;
     @FXML private ComboBox<String> cmbTipo;
     @FXML private TextField txtMotivo;
-    @FXML private Label lblMotivo;
+    @FXML private Label lblMotivoLabel;
     @FXML private Label lblDestino;
+    @FXML private Label lblTicketId;
+    @FXML private Label lblEstado;
 
-    private static final  String HOST = "localhost";
-    private static final  String PORT = "5000";
+    private static final AtomicInteger contador = new AtomicInteger(1);
+    private String ticketIdActual;
 
-
-     @FXML
-    public void initialize(){
-         cmbTipo.setItems(FXCollections.observableArrayList(
-                 "Hardware", "Software", "Red/Internet",
-                 "Servidor", "Accesos/Permisos", "Otro"));
-         cmbTipo.getSelectionModel().selectFirst();
-         lblMotivo.setText(Clasificador.getDestino("Hardware"));
-
-         txtMotivo.setVisible(false);
-         lblMotivo.setVisible(false);
-     }
-
-     @FXML
-    private void actualizarDestino(){
-         String tipo = cmbTipo.getValue();
-         if(tipo == null) return;
-
-         lblDestino.setText(Clasificador.getDestino(tipo));
-
-         boolean esPrioritario = tipo.equals("Servidor") || tipo.equals("Accesos/Permisos");
-         txtMotivo.setVisible(esPrioritario);
-         lblMotivo.setVisible(esPrioritario);
-
-         if(!esPrioritario) txtMotivo.clear();
-     }
-
-     @FXML
-    private void enviarTicket(){
-         String dpi = txtDpi.getText().trim();
-         String tipo = cmbTipo.getValue();
-
-         String motivo = txtMotivo.isVisible() ? txtMotivo.getText().trim() : tipo;
-
-         if(dpi.isEmpty()){
-             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor ingrese su DPI.");
-             return;
-         }
-
-         if (txtMotivo.isVisible() && motivo.isEmpty()) {
-             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor describa el motivo del problema.");
-             return;
-         }
-
-         Ticket ticket = new Ticket(dpi,dpi,motivo,tipo);
-
-         try {
-             Socket socket = new Socket(HOST,PUERTO);
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             out.writeObject(ticket);
-             out.flush();
-             socket.close();
-             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Ticket enviado correctamente.\nSerá atendido en: " + Clasificador.getDestino(tipo));
-         } catch (Exception e) {
-             mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo conectar con el servidor:\n" + e.getMessage());
-         }
-    }
-
-    private void limpiarCampos(){
-        txtDpi.clear();
-        txtMotivo.clear();
-        lblMotivo.setVisible(false);
-        lblDestino.setVisible(false);
+    @FXML
+    public void initialize() {
+        cmbTipo.setItems(FXCollections.observableArrayList(
+                "Hardware", "Software", "Conectividad", "Accesos/Red",
+                "Incidente Critico", "Servidores", "Infraestructura"));
         cmbTipo.getSelectionModel().selectFirst();
-        lblMotivo.setText(Clasificador.getDestino("Hardware");
+        lblDestino.setText(Clasificador.getDestino(cmbTipo.getValue()));
+
+        txtMotivo.setVisible(false);
+        lblMotivoLabel.setVisible(false);
+
+        ticketIdActual = generarTicketId();
+        lblTicketId.setText("Ticket: " + ticketIdActual);
     }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje){
-         Alert alert = new Alert(tipo);
-         alert.setTitle(titulo);
-         alert.setHeaderText(null);
-         alert.setContentText(mensaje);
-         alert.showAndWait();
+    @FXML
+    private void actualizarDestino() {
+        String tipo = cmbTipo.getValue();
+        if (tipo == null) return;
+
+        lblDestino.setText(Clasificador.getDestino(tipo));
+
+        boolean pideMotivo = Clasificador.esPrioridade(tipo);
+        txtMotivo.setVisible(pideMotivo);
+        lblMotivoLabel.setVisible(pideMotivo);
+        if (!pideMotivo) txtMotivo.clear();
+    }
+
+    @FXML
+    private void enviarTicket() {
+        String dpi    = txtDpi.getText() == null ? "" : txtDpi.getText().trim();
+        String nombre = txtNombre.getText() == null ? "" : txtNombre.getText().trim();
+        String tipo   = cmbTipo.getValue();
+        String motivo = txtMotivo.isVisible() ? txtMotivo.getText().trim() : tipo;
+
+        if (dpi.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese su DPI.");
+            return;
+        }
+        if (!dpi.matches("\\d{13}")) {
+            mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido",
+                    "El DPI debe contener exactamente 13 digitos numericos.");
+            return;
+        }
+        if (nombre.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese el nombre.");
+            return;
+        }
+        if (txtMotivo.isVisible() && motivo.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor describa el motivo.");
+            return;
+        }
+
+        Boolean prioridad = Clasificador.esPrioridade(tipo);
+        Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
+
+        String host = Configuracion.getHost();
+        int    port = Configuracion.getPort();
+
+        try (Socket socket = new Socket(host, port);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+
+            Mensaje msg = new Mensaje(TipoMensaje.REGISTRAR_TICKET, ticket, "PC2");
+            out.writeObject(msg);
+            out.flush();
+
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Exito",
+                    "Ticket " + ticketIdActual + " enviado correctamente.\n"
+                            + "Sera atendido en: " + Clasificador.getDestino(tipo));
+            lblEstado.setText("Ultimo enviado: " + ticketIdActual + " -> " + Clasificador.getDestino(tipo));
+            limpiarCampos();
+        } catch (Exception e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error",
+                    "No se pudo conectar con el servidor (" + host + ":" + port + ")\n" + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void regresarMenu() {
+        PC2Application.cargarVista("pc2_menu.fxml");
+    }
+
+    private void limpiarCampos() {
+        txtDpi.clear();
+        txtNombre.clear();
+        txtMotivo.clear();
+        lblMotivoLabel.setVisible(false);
+        txtMotivo.setVisible(false);
+        cmbTipo.getSelectionModel().selectFirst();
+        lblDestino.setText(Clasificador.getDestino(cmbTipo.getValue()));
+
+        ticketIdActual = generarTicketId();
+        lblTicketId.setText("Ticket: " + ticketIdActual);
+    }
+
+    private String generarTicketId() {
+        return String.format("TK-%04d", contador.getAndIncrement());
+    }
+
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
