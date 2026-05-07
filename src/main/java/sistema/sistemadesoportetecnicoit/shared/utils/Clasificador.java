@@ -12,7 +12,7 @@ public class Clasificador {
         if (tipo == null) return PC3_GENERAL;
 
         switch (tipo){
-            case "Accesos/Red":
+            case "Accesos":
             case "Incidente Critico":
                 return PC4_PRIORIDAD;
             case "Servidores":
@@ -28,7 +28,7 @@ public class Clasificador {
 
     public static  boolean esPrioridade(String tipo){
         if (tipo == null) return false;
-        return tipo.equals("Accesos/Red") || tipo.equals("Incidente Critico");
+        return tipo.equals("Accesos") || tipo.equals("Incidente Critico");
     }
 
     public static boolean esEspecial(String tipo){

@@ -34,7 +34,7 @@ public class RegistroController {
     @FXML
     public void initialize() {
         cmbTipo.setItems(FXCollections.observableArrayList(
-                "Hardware", "Software", "Conectividad", "Accesos/Red",
+                "Hardware", "Software", "Conectividad", "Accesos",
                 "Incidente Critico", "Servidores", "Infraestructura"));
         cmbTipo.getSelectionModel().selectFirst();
         lblDestino.setText(Clasificador.getDestino(cmbTipo.getValue()));

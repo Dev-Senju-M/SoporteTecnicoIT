@@ -3,6 +3,7 @@ package sistema.sistemadesoportetecnicoit.shared.models;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class Ticket implements Serializable {
 
@@ -18,6 +19,7 @@ public class Ticket implements Serializable {
     private long tiempoAtencion;
     private long tiempoFinal;
     private Boolean prioridad;
+    private LinkedHashMap<String,String> respuestas = new LinkedHashMap<>();
 
     public Ticket(String dpi, String nombreApellido, String motivo, String tipo, Boolean prioridad) {
         this(null, dpi, nombreApellido, motivo, tipo, prioridad);
@@ -74,6 +76,9 @@ public class Ticket implements Serializable {
     public void   setTiempoFinal(long t)       { this.tiempoFinal = t; }
     public Boolean getPrioridad()              { return prioridad; }
     public void   setPrioridad(Boolean b)      { this.prioridad = b; }
+    public LinkedHashMap<String,String> getRespuestas()                  { return respuestas; }
+    public void setRespuestas(LinkedHashMap<String,String> r)            { this.respuestas = r; }
+    public void agregarRespuesta(String pregunta, String respuesta)      { this.respuestas.put(pregunta, respuesta); }
 
     @Override
     public String toString() {
