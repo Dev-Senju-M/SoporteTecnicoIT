@@ -5,12 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import sistema.sistemadesoportetecnicoit.PC2Application;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
 import sistema.sistemadesoportetecnicoit.shared.utils.Clasificador;
 
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static sistema.sistemadesoportetecnicoit.shared.config.Configuracion.HOST;
@@ -81,12 +77,11 @@ public class RegistroController {
         Boolean prioridad = Clasificador.esPrioridade(tipo);
         Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
 
-        try (Socket socket = new Socket(HOST, PUERTO_PC1);
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
-
-            Mensaje msg = new Mensaje(TipoMensaje.REGISTRAR_TICKET, ticket, "PC2");
-            out.writeObject(msg);
-            out.flush();
+        Cliente cli = null;
+        try {
+            cli = new Cliente();
+            cli.startClient();
+            cli.enviarTicket(ticket);
 
             mostrarAlerta(Alert.AlertType.INFORMATION, "Exito",
                     "Ticket " + ticketIdActual + " enviado correctamente.\n"
@@ -96,6 +91,8 @@ public class RegistroController {
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR, "Error",
                     "No se pudo conectar con el servidor (" + HOST + ":" + PUERTO_PC1 + ")\n" + e.getMessage());
+        } finally {
+            if (cli != null) cli.cerrar();
         }
     }
 
