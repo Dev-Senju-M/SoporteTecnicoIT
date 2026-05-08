@@ -95,8 +95,8 @@ public class HistorialController {
 
     @SuppressWarnings("unchecked")
     private List<Ticket> consultarServidor(String dpi) throws Exception {
-        String host = Configuracion.getHost();
-        int    port = Configuracion.getPort();
+        String host = Configuracion.HOST;
+        int    port = Configuracion.PUERTO_PC1;
 
         try (Socket socket = new Socket(host, port);
              ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());

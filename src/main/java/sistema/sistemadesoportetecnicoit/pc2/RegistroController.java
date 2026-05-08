@@ -2,12 +2,8 @@ package sistema.sistemadesoportetecnicoit.pc2;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import sistema.sistemadesoportetecnicoit.PC2Application;
-import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
 import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
 import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
@@ -17,16 +13,19 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static sistema.sistemadesoportetecnicoit.shared.config.Configuracion.HOST;
+import static sistema.sistemadesoportetecnicoit.shared.config.Configuracion.PUERTO_PC1;
+
 public class RegistroController {
 
-    @FXML private TextField txtDpi;
-    @FXML private TextField txtNombre;
+    @FXML private TextField        txtDpi;
+    @FXML private TextField        txtNombre;
     @FXML private ComboBox<String> cmbTipo;
-    @FXML private TextField txtMotivo;
-    @FXML private Label lblMotivoLabel;
-    @FXML private Label lblDestino;
-    @FXML private Label lblTicketId;
-    @FXML private Label lblEstado;
+    @FXML private TextField        txtMotivo;
+    @FXML private Label            lblMotivoLabel;
+    @FXML private Label            lblDestino;
+    @FXML private Label            lblTicketId;
+    @FXML private Label            lblEstado;
 
     private static final AtomicInteger contador = new AtomicInteger(1);
     private String ticketIdActual;
@@ -61,36 +60,28 @@ public class RegistroController {
 
     @FXML
     private void enviarTicket() {
-        String dpi    = txtDpi.getText() == null ? "" : txtDpi.getText().trim();
+        String dpi    = txtDpi.getText()    == null ? "" : txtDpi.getText().trim();
         String nombre = txtNombre.getText() == null ? "" : txtNombre.getText().trim();
         String tipo   = cmbTipo.getValue();
         String motivo = txtMotivo.isVisible() ? txtMotivo.getText().trim() : tipo;
 
         if (dpi.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese su DPI.");
-            return;
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese su DPI."); return;
         }
         if (!dpi.matches("\\d{13}")) {
-            mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido",
-                    "El DPI debe contener exactamente 13 digitos numericos.");
-            return;
+            mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido", "El DPI debe contener exactamente 13 digitos."); return;
         }
         if (nombre.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese el nombre.");
-            return;
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese el nombre."); return;
         }
         if (txtMotivo.isVisible() && motivo.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor describa el motivo.");
-            return;
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor describa el motivo."); return;
         }
 
         Boolean prioridad = Clasificador.esPrioridade(tipo);
         Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
 
-        String host = Configuracion.getHost();
-        int    port = Configuracion.getPort();
-
-        try (Socket socket = new Socket(host, port);
+        try (Socket socket = new Socket(HOST, PUERTO_PC1);
              ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
             Mensaje msg = new Mensaje(TipoMensaje.REGISTRAR_TICKET, ticket, "PC2");
@@ -104,7 +95,7 @@ public class RegistroController {
             limpiarCampos();
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR, "Error",
-                    "No se pudo conectar con el servidor (" + host + ":" + port + ")\n" + e.getMessage());
+                    "No se pudo conectar con el servidor (" + HOST + ":" + PUERTO_PC1 + ")\n" + e.getMessage());
         }
     }
 
@@ -121,7 +112,6 @@ public class RegistroController {
         txtMotivo.setVisible(false);
         cmbTipo.getSelectionModel().selectFirst();
         lblDestino.setText(Clasificador.getDestino(cmbTipo.getValue()));
-
         ticketIdActual = generarTicketId();
         lblTicketId.setText("Ticket: " + ticketIdActual);
     }

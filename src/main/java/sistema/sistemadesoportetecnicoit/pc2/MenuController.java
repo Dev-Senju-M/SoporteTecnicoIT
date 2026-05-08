@@ -12,7 +12,7 @@ public class MenuController {
 
     @FXML
     public void initialize() {
-        lblServidor.setText("Servidor: " + Configuracion.getHost() + ":" + Configuracion.getPort());
+        lblServidor.setText("Servidor: " + Configuracion.HOST + ":" + Configuracion.PUERTO_PC1);
     }
 
     @FXML

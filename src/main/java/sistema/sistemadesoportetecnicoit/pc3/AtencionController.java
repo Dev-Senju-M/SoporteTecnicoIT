@@ -159,8 +159,8 @@ public class AtencionController {
     }
 
     private void enviarFinalizacion(Ticket t) throws Exception {
-        String host = Configuracion.getHost();
-        int    port = Configuracion.getPort();
+        String host = Configuracion.HOST;
+        int    port = Configuracion.PUERTO_PC1;
         try (Socket socket = new Socket(host, port);
              ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
             out.writeObject(new Mensaje(TipoMensaje.FINALIZAR_ATENCION, t, "PC3"));
