@@ -10,6 +10,7 @@ public enum TipoMensaje {
     // PC2 a PC1
     PEDIR_NORMAL,
 
+
     //PC3 a PC1
     PEDIR_PRIORIDAD,
 
