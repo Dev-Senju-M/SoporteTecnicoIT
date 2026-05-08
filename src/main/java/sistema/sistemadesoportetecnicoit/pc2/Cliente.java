@@ -21,7 +21,7 @@ public class Cliente {
             Mensaje msg = new Mensaje(TipoMensaje.REGISTRAR_TICKET, ticket, "PC2");
             out.writeObject(msg);
             out.flush();
-            System.out.println("✅ Ticket enviado: " + ticket);
+            System.out.println("Ticket enviado: " + ticket);
         }
     }
 
