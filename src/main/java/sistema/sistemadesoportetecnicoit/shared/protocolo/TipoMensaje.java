@@ -7,6 +7,12 @@ public enum TipoMensaje {
     // PC3/PC4/PC5 -> PC1
     SOLICITAR_TICKET,
 
+    // PC2 a PC1
+    PEDIR_NORMAL,
+
+    //PC3 a PC1
+    PEDIR_PRIORIDAD,
+
     // PC1 -> PC3/PC4/PC5
     ENTREGAR_TICKET,
 
