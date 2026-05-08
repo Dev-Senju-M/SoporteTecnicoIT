@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -13,14 +12,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sistema.sistemadesoportetecnicoit.PC2Application;
-import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.List;
 
 public class HistorialController {
@@ -64,62 +57,38 @@ public class HistorialController {
         lblEstado.setText("Consultando al servidor...");
         datos.clear();
 
-        Task<List<Ticket>> tarea = new Task<>() {
-            @Override
-            protected List<Ticket> call() throws Exception {
-                return consultarServidor(dpi);
+        Thread t = new Thread(() -> {
+            try {
+                List<Ticket> resultado = consultarServidor(dpi);
+                Platform.runLater(() -> {
+                    if (resultado == null || resultado.isEmpty()) {
+                        lblEstado.setText("Sin historial para DPI: " + dpi);
+                    } else {
+                        datos.setAll(resultado);
+                        lblEstado.setText("Se encontraron " + resultado.size() + " ticket(s) para DPI " + dpi + ".");
+                    }
+                });
+            } catch (Exception ex) {
+                Platform.runLater(() -> {
+                    lblEstado.setText("Error en la consulta.");
+                    mostrarAlerta(Alert.AlertType.ERROR, "Error",
+                            "No se pudo consultar al servidor:\n"
+                                    + (ex.getMessage() != null ? ex.getMessage() : "desconocido"));
+                });
             }
-        };
-
-        tarea.setOnSucceeded(e -> {
-            List<Ticket> resultado = tarea.getValue();
-            if (resultado == null || resultado.isEmpty()) {
-                lblEstado.setText("Sin historial para DPI: " + dpi);
-            } else {
-                datos.setAll(resultado);
-                lblEstado.setText("Se encontraron " + resultado.size() + " ticket(s) para DPI " + dpi + ".");
-            }
-        });
-
-        tarea.setOnFailed(e -> {
-            Throwable ex = tarea.getException();
-            lblEstado.setText("Error en la consulta.");
-            mostrarAlerta(Alert.AlertType.ERROR, "Error",
-                    "No se pudo consultar al servidor:\n" + (ex != null ? ex.getMessage() : "desconocido"));
-        });
-
-        Thread t = new Thread(tarea, "historial-busqueda");
+        }, "historial-busqueda");
         t.setDaemon(true);
         t.start();
     }
 
-    @SuppressWarnings("unchecked")
     private List<Ticket> consultarServidor(String dpi) throws Exception {
-        String host = Configuracion.HOST;
-        int    port = Configuracion.PUERTO_PC1;
-
-        try (Socket socket = new Socket(host, port);
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream  in  = new ObjectInputStream(socket.getInputStream())) {
-
-            out.writeObject(new Mensaje(TipoMensaje.BUSCAR_DPI, dpi, "PC2"));
-            out.flush();
-
-            Object respuesta = in.readObject();
-            if (!(respuesta instanceof Mensaje msg)) {
-                throw new IllegalStateException("Respuesta inesperada: " + respuesta);
-            }
-            if (msg.getTipo() == TipoMensaje.ERROR) {
-                throw new IllegalStateException("Servidor respondio ERROR: " + msg.getPayload());
-            }
-            if (msg.getTipo() != TipoMensaje.RESPUESTA_DPI) {
-                throw new IllegalStateException("Tipo inesperado: " + msg.getTipo());
-            }
-
-            Object payload = msg.getPayload();
-            if (payload == null) return List.of();
-            if (payload instanceof List<?> lista) return (List<Ticket>) lista;
-            throw new IllegalStateException("Payload no es lista: " + payload.getClass());
+        Cliente cli = null;
+        try {
+            cli = new Cliente();
+            cli.startClient();
+            return cli.buscarPorDpi(dpi);
+        } finally {
+            if (cli != null) cli.cerrar();
         }
     }
 

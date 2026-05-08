@@ -3,7 +3,6 @@ package sistema.sistemadesoportetecnicoit.pc3;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,14 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import sistema.sistemadesoportetecnicoit.PC3Application;
-import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
-import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
 import sistema.sistemadesoportetecnicoit.shared.utils.BancoPreguntas;
 
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -74,7 +68,6 @@ public class AtencionController {
 
     @FXML
     private void iniciarSimulacion() {
-        // Validar
         for (var e : camposPreguntas.entrySet()) {
             if (e.getValue().getText() == null || e.getValue().getText().isBlank()) {
                 mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios",
@@ -130,41 +123,37 @@ public class AtencionController {
 
         ticket.marcarFinalAtencion(SesionPC3.getTecnico());
 
-        Task<Void> tarea = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
+        Thread th = new Thread(() -> {
+            try {
                 enviarFinalizacion(ticket);
-                return null;
+                Platform.runLater(() -> {
+                    mostrarAlerta(Alert.AlertType.INFORMATION, "Atencion finalizada",
+                            "Ticket " + ticket.getTicketId() + " cerrado y enviado al servidor.");
+                    SesionPC3.setTicketActual(null);
+                    PC3Application.cargarVista("pc3_estacion.fxml");
+                });
+            } catch (Exception ex) {
+                Platform.runLater(() -> {
+                    btnFinalizar.setDisable(false);
+                    mostrarAlerta(Alert.AlertType.ERROR, "Error",
+                            "No se pudo enviar la finalizacion al servidor:\n"
+                                    + (ex.getMessage() != null ? ex.getMessage() : "desconocido"));
+                });
             }
-        };
-
-        tarea.setOnSucceeded(e -> {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Atencion finalizada",
-                    "Ticket " + ticket.getTicketId() + " cerrado y enviado al servidor.");
-            SesionPC3.setTicketActual(null);
-            PC3Application.cargarVista("pc3_estacion.fxml");
-        });
-
-        tarea.setOnFailed(e -> {
-            btnFinalizar.setDisable(false);
-            Throwable ex = tarea.getException();
-            mostrarAlerta(Alert.AlertType.ERROR, "Error",
-                    "No se pudo enviar la finalizacion al servidor:\n"
-                            + (ex != null ? ex.getMessage() : "desconocido"));
-        });
-
-        Thread th = new Thread(tarea, "pc3-finalizar");
+        }, "pc3-finalizar");
         th.setDaemon(true);
         th.start();
     }
 
+    /** Usa la clase Cliente (extiende Conexion) para reportar la finalizacion. */
     private void enviarFinalizacion(Ticket t) throws Exception {
-        String host = Configuracion.HOST;
-        int    port = Configuracion.PUERTO_PC1;
-        try (Socket socket = new Socket(host, port);
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
-            out.writeObject(new Mensaje(TipoMensaje.FINALIZAR_ATENCION, t, "PC3"));
-            out.flush();
+        Cliente cli = null;
+        try {
+            cli = new Cliente();
+            cli.startClient();
+            cli.enviarFinalizacion(t);
+        } finally {
+            if (cli != null) cli.cerrar();
         }
     }
 
