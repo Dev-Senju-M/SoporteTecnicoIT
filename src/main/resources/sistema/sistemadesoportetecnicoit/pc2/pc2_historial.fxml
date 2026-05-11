@@ -43,11 +43,12 @@
         <TableView fx:id="tablaTickets" prefHeight="320.0"
                    style="-fx-background-color: #3c3c3c; -fx-control-inner-background: #3c3c3c; -fx-text-fill: white;">
             <columns>
-                <TableColumn fx:id="colTicketId" prefWidth="90.0"  text="Ticket"/>
-                <TableColumn fx:id="colTipo"     prefWidth="130.0" text="Tipo"/>
-                <TableColumn fx:id="colMotivo"   prefWidth="200.0" text="Motivo"/>
-                <TableColumn fx:id="colTecnico"  prefWidth="120.0" text="Atendido por"/>
-                <TableColumn fx:id="colFecha"    prefWidth="160.0" text="Fecha de atencion"/>
+                <TableColumn fx:id="colTicketId"    prefWidth="90.0"  text="Ticket"/>
+                <TableColumn fx:id="colDpi"         prefWidth="120.0" text="DPI"/>
+                <TableColumn fx:id="colNombre"      prefWidth="160.0" text="Nombre"/>
+                <TableColumn fx:id="colMotivo"      prefWidth="160.0" text="Motivo"/>
+                <TableColumn fx:id="colTipo"        prefWidth="100.0" text="Tipo"/>
+                <TableColumn fx:id="colTiempoTotal" prefWidth="100.0" text="Tiempo total"/>
             </columns>
         </TableView>
 
