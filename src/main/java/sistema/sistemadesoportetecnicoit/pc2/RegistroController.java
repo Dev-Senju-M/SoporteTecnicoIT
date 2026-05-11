@@ -61,39 +61,37 @@ public class RegistroController {
         String tipo   = cmbTipo.getValue();
         String motivo = txtMotivo.isVisible() ? txtMotivo.getText().trim() : tipo;
 
-        if (dpi.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese su DPI."); return;
-        }
-        if (!dpi.matches("\\d{13}")) {
-            mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido", "El DPI debe contener exactamente 13 digitos."); return;
-        }
-        if (nombre.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor ingrese el nombre."); return;
-        }
-        if (txtMotivo.isVisible() && motivo.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacios", "Por favor describa el motivo."); return;
+        if (dpi.isEmpty() || !dpi.matches("\\d{13}") || nombre.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "validacion", "Revise los campos obligatorios.");
+            return;
         }
 
         Boolean prioridad = Clasificador.esPrioridade(tipo);
         Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
 
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            cli.enviarTicket(ticket);
+        new Thread(() -> {
+            Cliente cli = null;
+            try {
+                cli = new Cliente();
+                cli.startClient();
+                cli.enviarTicket(ticket);
 
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Exito",
-                    "Ticket " + ticketIdActual + " enviado correctamente.\n"
-                            + "Sera atendido en: " + Clasificador.getDestino(tipo));
-            lblEstado.setText("Ultimo enviado: " + ticketIdActual + " -> " + Clasificador.getDestino(tipo));
-            limpiarCampos();
-        } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error",
-                    "No se pudo conectar con el servidor (" + HOST + ":" + PUERTO_PC1 + ")\n" + e.getMessage());
-        } finally {
-            if (cli != null) cli.cerrar();
-        }
+                javafx.application.Platform.runLater(() -> {
+                    mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito",
+                            "Ticket " + ticket.getTicketId() + " enviado.");
+                    lblEstado.setText("Último enviado: " + ticket.getTicketId());
+                    limpiarCampos();
+                });
+
+            }catch(Exception e){
+                javafx.application.Platform.runLater(() -> {
+                    mostrarAlerta(Alert.AlertType.ERROR,"Error de Red",
+                            "No se pudo conectar con PC1: " + e.getMessage());
+                });
+            }finally{
+                if (cli != null) cli.cerrar();
+            }
+        }).start();
     }
 
     @FXML
