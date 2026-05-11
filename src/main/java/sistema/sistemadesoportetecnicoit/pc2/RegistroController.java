@@ -66,7 +66,7 @@ public class RegistroController {
             return;
         }
 
-        Boolean prioridad = Clasificador.esPrioridade(tipo);
+        boolean prioridad = Clasificador.esPrioridade(tipo);
         Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
 
         new Thread(() -> {
