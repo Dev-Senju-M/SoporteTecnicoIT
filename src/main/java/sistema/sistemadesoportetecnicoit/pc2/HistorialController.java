@@ -40,8 +40,11 @@ public class HistorialController {
         colTiempoTotal.setCellValueFactory(cd -> {
             Ticket t = cd.getValue();
             if (t == null) return new SimpleStringProperty("");
-            long min = t.getTiempoFinal();
-            return new SimpleStringProperty(min >= 0 ? min + " min" : "N/A");
+            double minutos = t.getDuracionAtencionMinutos();
+            if (minutos < 0 || minutos > 10000){
+                return new SimpleStringProperty("0.00 min");
+            }
+            return new SimpleStringProperty(String.format("%.2f min", minutos));
         });
 
         tablaTickets.setItems(datos);
