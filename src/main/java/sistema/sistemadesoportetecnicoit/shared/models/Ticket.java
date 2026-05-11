@@ -58,6 +58,10 @@ public class Ticket implements Serializable {
     public double getDuracionAtencionMinutos() {
         return (double) (tiempoFinal - tiempoAtencion) / 60000;
     }
+    public void reconstruirTiemposDesdeMinutos(double minutos){
+        this.tiempoFinal = System.currentTimeMillis();
+        this.tiempoAtencion = this.tiempoFinal - (long)(minutos * 60000);
+    }
 
     public void marcarInicioAtencion() { this.tiempoAtencion = System.currentTimeMillis(); }
 
