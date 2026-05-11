@@ -21,22 +21,28 @@ public class HistorialController {
     @FXML private TextField txtDpiBuscar;
     @FXML private TableView<Ticket> tablaTickets;
     @FXML private TableColumn<Ticket, String> colTicketId;
-    @FXML private TableColumn<Ticket, String> colTipo;
+    @FXML private TableColumn<Ticket, String> colDpi;
+    @FXML private TableColumn<Ticket, String> colNombre;
     @FXML private TableColumn<Ticket, String> colMotivo;
-    @FXML private TableColumn<Ticket, String> colTecnico;
-    @FXML private TableColumn<Ticket, String> colFecha;
+    @FXML private TableColumn<Ticket, String> colTipo;
+    @FXML private TableColumn<Ticket, String> colTiempoTotal;
     @FXML private Label lblEstado;
 
     private final ObservableList<Ticket> datos = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        colTicketId.setCellValueFactory(new PropertyValueFactory<>("ticketId"));
-        colTipo    .setCellValueFactory(new PropertyValueFactory<>("tipo"));
-        colMotivo  .setCellValueFactory(new PropertyValueFactory<>("motivo"));
-        colTecnico .setCellValueFactory(new PropertyValueFactory<>("usuarioAtendio"));
-        colFecha.setCellValueFactory(cd -> new SimpleStringProperty(
-                cd.getValue() == null ? "" : cd.getValue().getFechaHoraAtencion()));
+        colTicketId   .setCellValueFactory(new PropertyValueFactory<>("ticketId"));
+        colDpi        .setCellValueFactory(new PropertyValueFactory<>("dpi"));
+        colNombre     .setCellValueFactory(new PropertyValueFactory<>("nombreApellido"));
+        colMotivo     .setCellValueFactory(new PropertyValueFactory<>("motivo"));
+        colTipo       .setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        colTiempoTotal.setCellValueFactory(cd -> {
+            Ticket t = cd.getValue();
+            if (t == null) return new SimpleStringProperty("");
+            long min = t.getTiempoFinal();
+            return new SimpleStringProperty(min >= 0 ? min + " min" : "N/A");
+        });
 
         tablaTickets.setItems(datos);
         tablaTickets.setPlaceholder(new Label("Sin resultados. Ingrese un DPI y presione Buscar."));
