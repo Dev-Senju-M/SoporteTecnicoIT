@@ -2,6 +2,7 @@ package sistema.sistemadesoportetecnicoit.pc3;
 
 import sistema.sistemadesoportetecnicoit.shared.conexion.Conexion;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
+import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
 import sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje;
 
 import java.io.IOException;
@@ -11,58 +12,48 @@ import java.util.Map;
 public class Cliente extends Conexion {
 
     public Cliente() throws IOException {
-        super("cliente");
+        // El constructor padre ya inicializa el Socket y los ObjectStreams
+        super();
     }
 
-    public void startClient() throws IOException {
-        abrirFlujosCliente();
+    // Ya no necesitas abrir flujos manuales, el padre ya lo hizo
+    public void startClient() {
+        System.out.println("PC3 conectada al servidor de objetos.");
     }
 
-    public Ticket solicitarTicket(String cola) throws IOException {
-        enviarAlServidor(TipoMensaje.SOLICITAR_TICKET.name() + "|" + safe(cola));
+    /**
+     * Solicita el siguiente ticket de la cola (Normal o Urgente)
+     */
+    public Ticket solicitarTicket(String tipoCola) throws IOException {
+        // 1. Enviamos el mensaje de solicitud
+        // El payload es el nombre de la cola (ej. "NORMAL" o "URGENTE")
+        Mensaje peticion = new Mensaje(TipoMensaje.SOLICITAR_TICKET, tipoCola, "PC3");
+        enviar(peticion);
 
-        mensajeCliente = entradaServidor.readLine();
-        if (mensajeCliente == null) return null;
+        try {
+            // 2. Recibimos la respuesta
+            Mensaje respuesta = recibir();
 
-        String[] partes = mensajeCliente.split("\\|", -1);
-        if (partes.length < 2) return null;
-        if (!partes[0].equals(TipoMensaje.ENTREGAR_TICKET.name())) return null;
-        if (partes[1].equalsIgnoreCase("NONE")) return null;
-
-        String ticketId = partes[1];
-        String dpi      = partes.length > 2 ? partes[2] : "";
-        String nombre   = partes.length > 3 ? partes[3] : "";
-        String tipo     = partes.length > 4 ? partes[4] : "";
-        String motivo   = partes.length > 5 ? partes[5] : "";
-        Boolean pri     = Boolean.FALSE;
-        if (partes.length > 6) pri = Boolean.parseBoolean(partes[6]);
-        return new Ticket(ticketId, dpi, nombre, motivo, tipo, pri);
-    }
-
-    public void enviarFinalizacion(Ticket t) throws IOException {
-        StringBuilder respuestas = new StringBuilder();
-        if (t.getRespuestas() != null) {
-            boolean primera = true;
-            for (Map.Entry<String, String> e : t.getRespuestas().entrySet()) {
-                if (!primera) respuestas.append(";;");
-                respuestas.append(safe(e.getKey()))
-                          .append("==")
-                          .append(safe(e.getValue()));
-                primera = false;
+            if (respuesta != null && respuesta.getTipo() == TipoMensaje.ENTREGAR_TICKET) {
+                // El payload es el objeto Ticket directamente (o null si está vacía)
+                return (Ticket) respuesta.getPayload();
             }
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Error al reconstruir el ticket recibido", e);
         }
 
-        String linea = TipoMensaje.FINALIZAR_ATENCION.name()
-                + "|" + safe(t.getTicketId())
-                + "|" + safe(t.getUsuarioAtendio())
-                + "|" + t.getTiempoEntrada()
-                + "|" + t.getTiempoAtencion()
-                + "|" + t.getTiempoFinal()
-                + "|" + respuestas.toString();
-        enviarAlServidor(linea);
+        return null;
     }
 
-    private static String safe(String s) {
-        return s == null ? "" : s.replace('|', ' ').replace('\n', ' ').replace('\r', ' ');
+    /**
+     * Envía el ticket ya procesado con su resolución para guardarlo en el Árbol B+
+     */
+    public void enviarFinalizacion(Ticket t) throws IOException {
+        // Ya no necesitas StringBuilder ni "==" ni ";;"
+        // Simplemente metes el objeto Ticket (con sus respuestas ya dentro) en el Mensaje
+        Mensaje finalizado = new Mensaje(TipoMensaje.FINALIZAR_ATENCION, t, "PC3");
+        enviar(finalizado);
+
+        System.out.println("Ticket " + t.getTicketId() + " enviado para persistencia.");
     }
 }

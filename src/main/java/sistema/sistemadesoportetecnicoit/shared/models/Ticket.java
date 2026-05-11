@@ -18,11 +18,21 @@ public class Ticket implements Serializable {
     private long tiempoEntrada;
     private long tiempoAtencion;
     private long tiempoFinal;
-    private Boolean prioridad;
+    private boolean prioridad;
     private LinkedHashMap<String,String> respuestas = new LinkedHashMap<>();
+
+
+    public Ticket() {
+    }
 
     public Ticket(String dpi, String nombreApellido, String motivo, String tipo, Boolean prioridad) {
         this(null, dpi, nombreApellido, motivo, tipo, prioridad);
+    }
+    public Ticket(String ticketId,String tipo, String motivo, String usuarioAtendio) {
+        this.ticketId = ticketId;
+        this.motivo = motivo;
+        this.tipo = tipo;
+        this.usuarioAtendio = usuarioAtendio;
     }
 
     public Ticket(String ticketId, String dpi, String nombreApellido, String motivo, String tipo, Boolean prioridad) {
@@ -74,7 +84,7 @@ public class Ticket implements Serializable {
     public void   setTiempoAtencion(long t)    { this.tiempoAtencion = t; }
     public long   getTiempoFinal()             { return tiempoFinal; }
     public void   setTiempoFinal(long t)       { this.tiempoFinal = t; }
-    public Boolean getPrioridad()              { return prioridad; }
+    public boolean getPrioridad()              { return prioridad; }
     public void   setPrioridad(Boolean b)      { this.prioridad = b; }
     public LinkedHashMap<String,String> getRespuestas()                  { return respuestas; }
     public void setRespuestas(LinkedHashMap<String,String> r)            { this.respuestas = r; }
