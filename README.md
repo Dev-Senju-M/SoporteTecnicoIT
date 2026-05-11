@@ -1,6 +1,6 @@
 # Sistema de Soporte Técnico IT
 
-Proyecto del curso de **Estructuras de Datos** — Sistema distribuido en Java para la gestión de atención de tickets de soporte técnico mediante colas, hilos y comunicación por sockets.
+Proyecto del curso de **Programación III** — Sistema distribuido en Java para la gestión de tickets de soporte técnico mediante colas, hilos y comunicación por sockets TCP.
 
 ---
 
@@ -14,21 +14,17 @@ Proyecto del curso de **Estructuras de Datos** — Sistema distribuido en Java p
 - [Tecnologías](#tecnologías)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Requisitos Previos](#requisitos-previos)
-- [Configuración](#configuración)
-- [Compilación](#compilación)
 - [Ejecución](#ejecución)
 - [Protocolo de Comunicación](#protocolo-de-comunicación)
 - [Persistencia y Búsqueda](#persistencia-y-búsqueda)
-- [Capturas de Pantalla](#capturas-de-pantalla)
-- [Pruebas](#pruebas)
 
 ---
 
 ## Descripción
 
-El sistema simula la operación de un **Departamento de Soporte Técnico IT** en el que los usuarios reportan incidentes tecnológicos y son atendidos por distintos niveles de soporte según el tipo y la prioridad del incidente.
+El sistema simula la operación de un **Departamento de Soporte Técnico IT** en el que los usuarios reportan incidentes tecnológicos y son atendidos según el tipo del ticket: general, prioritario o especial.
 
-El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, donde uno funciona como servidor central y los otros cuatro como clientes especializados.
+El sistema está distribuido en **5 nodos** que se comunican por sockets TCP. PC1 actúa como servidor central y PC2–PC5 como clientes especializados, cada uno con su interfaz JavaFX independiente.
 
 ---
 
@@ -36,14 +32,14 @@ El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, do
 
 | Nombre | Carné | Rol |
 |---|---|---|
-| Erick Alexander Palomo Mazariegos | 1290-24-25790 | PC1 — Servidor |
-| Bryant Alexander To Castillo | 1290-24-12239 | PC2 — Registro |
-| Marcos Daniel Valle Larios | 1290-24-16029 | [Rol] |
+| Erick Alexander Palomo Mazariegos | 1290-24-25790 | PC1 — Servidor Central |
+| Bryant Alexander To Castillo | 1290-24-12239 | PC2 — Registro e Historial |
+| Marcos Daniel Valle Larios | 1290-24-16029 | PC3 / PC4 / PC5 — Atención |
 
-**Universidad:** [Nombre de la universidad]
-**Curso:** Estructuras de Datos
-**Catedrático:** [Nombre del catedrático]
-**Sección:** [Sección]
+**Universidad:** Universidad Mariano Galvez  
+**Curso:** Programación III  
+**Catedrático:** Elmer  
+**Sección:** A  
 **Año:** 2026
 
 ---
@@ -51,78 +47,77 @@ El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, do
 ## Arquitectura del Sistema
 
 ```
-                        ┌──────────────────────┐
-                        │   PC1 - SERVIDOR     │
-                        │   (Help Desk)        │
-                        │                      │
-                        │  - Cola General      │
-                        │  - Cola Prioritaria  │
-                        │  - Cola Especial     │
-                        │  - Árbol B+          │
-                        └──────────┬───────────┘
-                                   │  Sockets TCP
-            ┌──────────────────────┼──────────────────────┐
-            │           │          │          │           │
-       ┌────┴────┐ ┌────┴────┐ ┌───┴────┐ ┌───┴────┐ ┌────┴────┐
-       │   PC2   │ │   PC3   │ │  PC4   │ │  PC5   │ │   ...   │
-       │Registro │ │Soporte  │ │Soporte │ │Soporte │ │         │
-       │         │ │  N1     │ │Crítico │ │  N2    │ │         │
-       └─────────┘ └─────────┘ └────────┘ └────────┘ └─────────┘
+                     ┌──────────────────────────┐
+                     │      PC1 - SERVIDOR      │
+                     │                          │
+                     │  Cola General            │
+                     │  Cola Prioritaria        │
+                     │  Cola Especial           │
+                     │  Árbol B+ (historial)    │
+                     └────────────┬─────────────┘
+                                  │  Sockets TCP
+          ┌───────────────────────┼───────────────────────┐
+          │               │               │               │
+     ┌────┴────┐     ┌────┴────┐    ┌────┴────┐    ┌────┴────┐
+     │   PC2   │     │   PC3   │    │   PC4   │    │   PC5   │
+     │Registro │     │Soporte  │    │Soporte  │    │Soporte  │
+     │Historial│     │General  │    │Priorit. │    │Especial │
+     └─────────┘     └─────────┘    └─────────┘    └─────────┘
 ```
 
 ---
 
 ## Componentes
 
-### PC1 — Servidor Central (Help Desk)
-- Mantiene las colas de tickets pendientes.
-- Maneja un hilo por cada cliente conectado.
-- Visualiza en tiempo real los tickets en cola y los que están siendo atendidos.
-- Persiste las atenciones finalizadas en archivo.
-- Carga el archivo en un **árbol B+** para búsqueda eficiente por DPI.
+### PC1 — Servidor Central
+- Gestiona tres colas independientes: **General**, **Prioritaria** y **Especial**.
+- Atiende un hilo por cliente conectado simultáneamente.
+- Persiste cada atención finalizada en un archivo de datos.
+- Carga el historial en un **Árbol B+** para búsqueda eficiente por DPI.
+- Muestra en tiempo real el estado de las colas.
 
-### PC2 — Registro de Tickets
-- Punto de ingreso de usuarios al sistema.
-- Solicita el DPI del usuario.
-- Genera automáticamente un número de ticket (`TK-XXXX`).
-- Envía la información al servidor para que el ticket sea encolado.
+### PC2 — Registro e Historial
+- Punto de ingreso de nuevos tickets al sistema.
+- Solicita DPI, nombre, tipo de ticket y motivo.
+- Genera automáticamente el número de ticket (`TK-XXXX`).
+- Permite consultar el historial de tickets de un usuario por DPI, mostrando: ticket, DPI, nombre, motivo, tipo y tiempo total de atención.
 
-### PC3 — Soporte Nivel 1 (Atención General)
-- Atiende tickets de la **cola general**.
-- Casos típicos: contraseñas, correo, software básico, impresoras, red.
-- Mientras atiende, la estación queda **bloqueada** hasta finalizar.
+### PC3 — Soporte General
+- Atiende tickets de la **cola General** (`tipoCola = "GENERAL"`).
+- Casos típicos: hardware, software, conectividad.
+- El técnico responde un cuestionario de diagnóstico y simula la resolución antes de finalizar.
 
-### PC4 — Soporte Crítico (Atención Prioritaria)
-- Atiende tickets de la **cola de prioridad**.
-- Casos críticos: caídas de servidor, brechas de seguridad, sistemas productivos detenidos.
-- Niveles de prioridad: `CRÍTICO (1) > ALTO (2) > MEDIO (3) > BAJO (4)`.
+### PC4 — Soporte Prioritario
+- Atiende tickets de la **cola Prioritaria** (`tipoCola = "PRIORITARIO"`).
+- Casos urgentes que requieren atención inmediata.
+- Flujo idéntico a PC3 pero consumiendo exclusivamente tickets de prioridad.
 
-### PC5 — Soporte Nivel 2 (Atención Especial)
-- Atiende casos especializados: instalación de hardware nuevo, licenciamiento, migraciones, consultoría.
-- Cola dedicada gestionada por el servidor.
+### PC5 — Soporte Especial
+- Atiende tickets de la **cola Especial** (`tipoCola = "ESPECIAL"`).
+- Casos especializados: instalaciones, licenciamiento, migraciones.
+- Flujo idéntico a PC3/PC4 pero para la cola especial.
 
 ---
 
 ## Estructuras de Datos Utilizadas
 
-| Estructura | Implementación | Uso |
-|---|---|---|
-| Cola FIFO | `LinkedList` / implementación propia | Cola general (PC3) |
-| Cola de Prioridad | `PriorityQueue` | Cola crítica (PC4) |
-| Cola FIFO | `LinkedList` / implementación propia | Cola especial (PC5) |
-| Árbol B+ | Implementación propia | Búsqueda histórica por DPI |
-| Tabla Hash | `HashMap` | Índice rápido de tickets activos |
+| Estructura | Uso en el sistema |
+|---|---|
+| Cola FIFO | Cola General y Cola Especial (PC3, PC5) |
+| Cola de Prioridad | Cola Prioritaria (PC4) |
+| Árbol B+ | Historial de atenciones — búsqueda por DPI en PC2 |
+| HashMap | Índice rápido de tickets activos en el servidor |
 
 ---
 
 ## Tecnologías
 
-- **Lenguaje:** Java 20+
-- **UI:** JavaFX 
-- **Build Tool:** Maven (con `maven-shade-plugin` para fat JAR)
-- **Comunicación:** Sockets TCP
-- **Concurrencia:** Hilos, `synchronized`, `ReentrantLock`
-- **Persistencia:** Archivos planos / serialización
+- **Lenguaje:** Java 21
+- **UI:** JavaFX 21
+- **Build:** Maven
+- **Comunicación:** Sockets TCP (protocolo de objetos serializados)
+- **Concurrencia:** `Thread`, `synchronized`
+- **Persistencia:** Serialización de objetos en archivo `.dat`
 - **Control de versiones:** Git + GitHub
 
 ---
@@ -130,167 +125,95 @@ El sistema está distribuido en **5 nodos** que se comunican por sockets TCP, do
 ## Estructura del Proyecto
 
 ```
-SoporteIT/
-├── common/                       # Clases compartidas entre todos los nodos
-│   ├── src/main/java/
-│   │   ├── modelo/
-│   │   │   ├── Ticket.java
-│   │   │   ├── Atencion.java
-│   │   │   ├── Prioridad.java
-│   │   │   └── EstadoTicket.java
-│   │   ├── protocolo/
-│   │   │   ├── Mensaje.java
-│   │   │   └── TipoMensaje.java
-│   │   └── config/
-│   │       └── Configuracion.java
-│   └── pom.xml
-│
-├── servidor/                     # PC1
-│   ├── src/main/java/
-│   └── pom.xml
-│
-├── registro/                     # PC2
-│   ├── src/main/java/
-│   └── pom.xml
-│
-├── soporteN1/                    # PC3
-├── soporteCritico/               # PC4
-├── soporteN2/                    # PC5
-│
-├── config/
-│   ├── servidor.properties       # Puerto, ruta de archivos
-│   └── cliente.properties        # IP del servidor, puerto
-│
-├── data/
-│   └── atenciones.dat            # Archivo persistente de atenciones
-│
-├── docs/
-│   ├── capturas/                 # Pantallazos de las interfaces
-│   └── pruebas/                  # Archivos de prueba generados
-│
-├── pom.xml                       # POM padre
-└── README.md
+SistemadeSoporteTecnicoIT/
+├── src/
+│   ├── main/
+│   │   ├── java/sistema/sistemadesoportetecnicoit/
+│   │   │   ├── PC1Application.java / PC1Launcher.java
+│   │   │   ├── PC2Application.java / PC2Launcher.java
+│   │   │   ├── PC3Application.java / PC3Launcher.java
+│   │   │   ├── PC4Application.java / PC4Launcher.java
+│   │   │   ├── PC5Application.java / PC5Launcher.java
+│   │   │   ├── pc1/          # Servidor: controladores y lógica de colas
+│   │   │   ├── pc2/          # Registro e historial: controladores
+│   │   │   ├── pc3/          # Soporte General: controladores
+│   │   │   ├── pc4/          # Soporte Prioritario: controladores
+│   │   │   ├── pc5/          # Soporte Especial: controladores
+│   │   │   └── shared/
+│   │   │       ├── conexion/  # Clase base Conexion (sockets)
+│   │   │       ├── models/    # Ticket.java
+│   │   │       ├── protocolo/ # Mensaje.java, TipoMensaje.java
+│   │   │       └── utils/     # BancoPreguntas.java
+│   │   └── resources/sistema/sistemadesoportetecnicoit/
+│   │       ├── pc2/           # pc2_menu.fxml, pc2_registro.fxml, pc2_historial.fxml
+│   │       ├── pc3/           # pc3_login.fxml, pc3_estacion.fxml, pc3_atencion.fxml
+│   │       ├── pc4/           # pc4_login.fxml, pc4_estacion.fxml, pc4_atencion.fxml
+│   │       └── pc5/           # pc5_login.fxml, pc5_estacion.fxml, pc5_atencion.fxml
+└── pom.xml
 ```
 
 ---
 
 ## Requisitos Previos
 
-- **JDK 20** o superior
+- **JDK 21** o superior
 - **Maven 3.8+**
-- **Git**
-- 5 PCs en la misma red (o una sola PC para pruebas locales con `localhost`)
-
----
-
-## Configuración
-
-Cada cliente lee su archivo de configuración desde `config/cliente.properties`:
-
-```properties
-# IP del servidor central
-servidor.host=192.168.1.100
-servidor.puerto=5000
-```
-
-El servidor usa `config/servidor.properties`:
-
-```properties
-servidor.puerto=5000
-archivo.atenciones=data/atenciones.dat
-```
-
-> Modifica la IP según la red local donde se ejecute el sistema. Para pruebas locales usar `127.0.0.1`.
-
----
-
-## Compilación
-
-Desde la raíz del proyecto:
-
-```bash
-mvn clean package
-```
-
-Esto generará un `.jar` ejecutable por cada componente en su respectiva carpeta `target/`.
+- **IntelliJ IDEA** (recomendado) o cualquier IDE con soporte JavaFX
+- Las 5 PCs deben estar en la **misma red local** (o usar `localhost` para pruebas)
 
 ---
 
 ## Ejecución
 
-> **IMPORTANTE:** El servidor (PC1) debe iniciarse **antes** que cualquier cliente.
+> **IMPORTANTE:** PC1 (servidor) debe iniciarse **antes** que cualquier cliente.
 
-### 1. Iniciar el servidor (PC1)
+Cada nodo se ejecuta desde su clase `Launcher` correspondiente en el IDE, o mediante Maven sobreescribiendo la clase principal:
+
 ```bash
-java -jar servidor/target/ServidorHelpDesk.jar
+# PC1 - Servidor
+mvn javafx:run -Djavafx.mainClass=sistema.sistemadesoportetecnicoit.PC1Launcher
+
+# PC2 - Registro e Historial
+mvn javafx:run -Djavafx.mainClass=sistema.sistemadesoportetecnicoit.PC2Launcher
+
+# PC3 - Soporte General
+mvn javafx:run -Djavafx.mainClass=sistema.sistemadesoportetecnicoit.PC3Launcher
+
+# PC4 - Soporte Prioritario
+mvn javafx:run -Djavafx.mainClass=sistema.sistemadesoportetecnicoit.PC4Launcher
+
+# PC5 - Soporte Especial
+mvn javafx:run -Djavafx.mainClass=sistema.sistemadesoportetecnicoit.PC5Launcher
 ```
 
-### 2. Iniciar la interfaz de registro (PC2)
-```bash
-java -jar registro/target/RegistroTickets.jar
-```
-
-### 3. Iniciar las estaciones de atención
-```bash
-java -jar soporteN1/target/SoporteN1.jar
-java -jar soporteCritico/target/SoporteCritico.jar
-java -jar soporteN2/target/SoporteN2.jar
-```
+Para pruebas locales, la IP del servidor está configurada en `shared/conexion/Conexion.java`.
 
 ---
 
 ## Protocolo de Comunicación
 
-Los mensajes entre cliente y servidor se envían como objetos `Mensaje` serializados sobre sockets TCP.
+Los mensajes se transmiten como objetos `Mensaje` serializados sobre TCP. Cada mensaje tiene un `TipoMensaje`, un payload y el identificador del origen.
 
-| Tipo de Mensaje | Origen | Descripción |
+| Tipo | Dirección | Descripción |
 |---|---|---|
-| `REGISTRAR_TICKET` | PC2 → PC1 | Registra un nuevo usuario en cola |
-| `SOLICITAR_TICKET` | PC3/PC4/PC5 → PC1 | Pide el siguiente ticket de la cola correspondiente |
-| `ENTREGAR_TICKET` | PC1 → PC3/PC4/PC5 | Servidor entrega el siguiente ticket |
-| `FINALIZAR_ATENCION` | PC3/PC4/PC5 → PC1 | Reporta el cierre de una atención |
-| `ACTUALIZAR_VISTA` | PC1 → Todos | Difunde el estado actual de las colas |
-| `BUSCAR_DPI` | PC1 (interno) | Búsqueda en árbol B+ |
+| `REGISTRAR_TICKET` | PC2 → PC1 | Envía un ticket nuevo para ser encolado |
+| `SOLICITAR_TICKET` | PC3/PC4/PC5 → PC1 | Pide el siguiente ticket de su cola (`GENERAL`, `PRIORITARIO` o `ESPECIAL`) |
+| `ENTREGAR_TICKET` | PC1 → PC3/PC4/PC5 | Respuesta con el objeto `Ticket` (o `null` si la cola está vacía) |
+| `FINALIZAR_ATENCION` | PC3/PC4/PC5 → PC1 | Ticket completado con respuestas y tiempos, listo para persistir |
+| `BUSCAR_DPI` | PC2 → PC1 | Solicita el historial de tickets de un DPI |
+| `RESULTADO_BUSQUEDA` | PC1 → PC2 | Lista de tickets encontrados en el Árbol B+ |
 
 ---
 
 ## Persistencia y Búsqueda
 
-- Cada atención finalizada se serializa y se guarda en `data/atenciones.dat`.
-- Al solicitar una búsqueda, el archivo se carga en un **árbol B+** en memoria.
-- La búsqueda por DPI es de complejidad **O(log n)**.
-- La eficiencia se documenta en `docs/eficiencia.md`.
-
----
-
-## Capturas de Pantalla
-
-Las capturas de cada interfaz están en `docs/capturas/`.
-
-| Interfaz | Captura |
-|---|---|
-| Servidor (PC1) | `docs/capturas/pc1_servidor.png` |
-| Registro (PC2) | `docs/capturas/pc2_registro.png` |
-| Soporte N1 (PC3) | `docs/capturas/pc3_soporten1.png` |
-| Soporte Crítico (PC4) | `docs/capturas/pc4_soportecritico.png` |
-| Soporte N2 (PC5) | `docs/capturas/pc5_soporten2.png` |
-
----
-
-## Pruebas
-
-Los archivos de prueba se encuentran en `docs/pruebas/`:
-- `atenciones_prueba.dat` — archivo de atenciones generado durante las pruebas.
-- `busquedas.txt` — resultados de búsquedas por DPI.
+- Cada atención finalizada se serializa y se guarda en archivo por el servidor.
+- Al arrancar, el servidor carga el archivo en un **Árbol B+** indexado por DPI.
+- La búsqueda desde PC2 (historial) tiene complejidad **O(log n)**.
+- Los campos mostrados en el historial son: Ticket ID, DPI, Nombre, Motivo, Tipo y Tiempo total de atención.
 
 ---
 
 ## Repositorio
 
 https://github.com/Dev-Senju-M/SoporteTecnicoIT
-
----
-
-## Licencia
-
-Proyecto académico — uso educativo.

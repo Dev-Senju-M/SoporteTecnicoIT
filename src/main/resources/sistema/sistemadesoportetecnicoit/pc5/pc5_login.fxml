@@ -9,13 +9,13 @@
 <VBox alignment="CENTER" prefHeight="300.0" prefWidth="380.0" spacing="14.0"
       style="-fx-background-color: #2b2b2b; -fx-background-radius: 6;"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="sistema.sistemadesoportetecnicoit.pc3.LoginController">
+      fx:controller="sistema.sistemadesoportetecnicoit.pc5.LoginController">
     <padding>
         <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
     </padding>
     <children>
-        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #00c8ff;"
-               text="PC3 - Soporte General"/>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #ce93d8;"
+               text="PC5 - Soporte Especial"/>
         <Label style="-fx-font-size: 11px; -fx-text-fill: #888888;"
                text="Identifiquese para iniciar la sesion"/>
 
@@ -24,7 +24,7 @@
 
         <Button onAction="#iniciar"
                 prefHeight="40.0" prefWidth="200.0"
-                style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"
+                style="-fx-background-color: #6a1b9a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"
                 text="Iniciar Sesion"/>
 
         <Label fx:id="lblError"
