@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import sistema.sistemadesoportetecnicoit.PC2Application;
+import sistema.sistemadesoportetecnicoit.shared.chat.ChatController;
 import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 
 import java.io.IOException;
@@ -42,6 +43,11 @@ public class MenuController {
     @FXML
     private void abrirHistorial() {
         PC2Application.cargarVista("pc2_historial.fxml");
+    }
+
+    @FXML
+    private void abrirChat() {
+        ChatController.abrir("PC2", SesionPC2.getConexion());
     }
 
     @FXML

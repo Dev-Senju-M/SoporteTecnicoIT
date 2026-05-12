@@ -29,6 +29,8 @@ public enum TipoMensaje {
     // PC1 -> PC2
     RESPUESTA_DPI,
 
+    CHAT_MENSAJE,
+
     OK,
     ERROR,
     DESCONECTAR
