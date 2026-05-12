@@ -146,14 +146,11 @@ public class AtencionController {
     }
 
     private void enviarFinalizacion(Ticket t) throws Exception {
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            cli.enviarFinalizacion(t);
-        } finally {
-            if (cli != null) cli.cerrar();
+        Cliente cli = SesionPC5.getConexion();
+        if (cli == null){
+            throw new Exception("La conexion con el servidor se ha perdido.");
         }
+        cli.enviarFinalizacion(t);
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {

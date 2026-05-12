@@ -30,6 +30,7 @@ public enum TipoMensaje {
     RESPUESTA_DPI,
 
     OK,
-    ERROR
+    ERROR,
+    DESCONECTAR
 
 }

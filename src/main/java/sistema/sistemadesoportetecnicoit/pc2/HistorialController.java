@@ -91,14 +91,11 @@ public class HistorialController {
     }
 
     private List<Ticket> consultarServidor(String dpi) throws Exception {
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            return cli.buscarPorDpi(dpi);
-        } finally {
-            if (cli != null) cli.cerrar();
+        Cliente cli = SesionPC2.getConexion();
+        if (cli==null){
+            throw new Exception("No hay conexion activa con el servidor central.");
         }
+        return cli.buscarPorDpi(dpi);
     }
 
     @FXML

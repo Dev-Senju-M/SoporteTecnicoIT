@@ -70,11 +70,13 @@ public class RegistroController {
         Ticket ticket = new Ticket(ticketIdActual, dpi, nombre, motivo, tipo, prioridad);
 
         new Thread(() -> {
-            Cliente cli = null;
+
             try {
-                cli = new Cliente();
-                cli.startClient();
-                cli.enviarTicket(ticket);
+                Cliente servidor = SesionPC2.getConexion();
+                if (servidor == null) {
+                    throw new Exception("No hay conexion activa con el servidor.");
+                }
+                servidor.enviarTicket(ticket);
 
                 javafx.application.Platform.runLater(() -> {
                     mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito",
@@ -86,12 +88,10 @@ public class RegistroController {
             }catch(Exception e){
                 javafx.application.Platform.runLater(() -> {
                     mostrarAlerta(Alert.AlertType.ERROR,"Error de Red",
-                            "No se pudo conectar con PC1: " + e.getMessage());
+                            "Fallo al enviar el ticket: " + e.getMessage());
                 });
-            }finally{
-                if (cli != null) cli.cerrar();
             }
-        }).start();
+        },"pc2-sender").start();
     }
 
     @FXML

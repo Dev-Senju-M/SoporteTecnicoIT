@@ -15,24 +15,20 @@ public class Cliente extends Conexion {
         super();
     }
 
-
     public void startClient() {
-        System.out.println("PC3 conectada al servidor");
+        System.out.println("PC3 conectada al servidor.");
     }
 
     public Ticket solicitarTicket(String tipoCola) throws IOException {
-
         Mensaje peticion = new Mensaje(TipoMensaje.SOLICITAR_TICKET, tipoCola, "PC3");
         enviar(peticion);
 
         try {
-
             Mensaje respuesta = recibir();
-
             if (respuesta != null && respuesta.getTipo() == TipoMensaje.ENTREGAR_TICKET) {
-
                 return (Ticket) respuesta.getPayload();
             }
+            System.out.println("PC3: No hay tickets disponibles en la cola: " + tipoCola);
         } catch (ClassNotFoundException e) {
             throw new IOException("Error al reconstruir el ticket recibido", e);
         }
@@ -40,12 +36,10 @@ public class Cliente extends Conexion {
         return null;
     }
 
-
     public void enviarFinalizacion(Ticket t) throws IOException {
-
+        if(t==null) return;
         Mensaje finalizado = new Mensaje(TipoMensaje.FINALIZAR_ATENCION, t, "PC3");
         enviar(finalizado);
-
         System.out.println("Ticket " + t.getTicketId() + " enviado para persistencia.");
     }
 }
