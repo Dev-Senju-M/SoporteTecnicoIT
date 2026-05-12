@@ -14,7 +14,7 @@ public class Cliente extends Conexion {
     }
 
     public void startClient() {
-        System.out.println("PC5 conectada al servidor de objetos.");
+        System.out.println("PC5 conectada al servidor.");
     }
 
     public Ticket solicitarTicket(String tipoCola) throws IOException {
@@ -26,6 +26,7 @@ public class Cliente extends Conexion {
             if (respuesta != null && respuesta.getTipo() == TipoMensaje.ENTREGAR_TICKET) {
                 return (Ticket) respuesta.getPayload();
             }
+            System.out.println("PC5: No hay tickets disponibles en la cola: " + tipoCola);
         } catch (ClassNotFoundException e) {
             throw new IOException("Error al reconstruir el ticket recibido", e);
         }
@@ -34,6 +35,7 @@ public class Cliente extends Conexion {
     }
 
     public void enviarFinalizacion(Ticket t) throws IOException {
+        if(t==null) return;
         Mensaje finalizado = new Mensaje(TipoMensaje.FINALIZAR_ATENCION, t, "PC5");
         enviar(finalizado);
         System.out.println("Ticket " + t.getTicketId() + " enviado para persistencia.");

@@ -145,16 +145,14 @@ public class AtencionController {
         th.start();
     }
 
-    /** Usa la clase Cliente (extiende Conexion) para reportar la finalizacion. */
+    /** Y Esto que? */
+
     private void enviarFinalizacion(Ticket t) throws Exception {
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            cli.enviarFinalizacion(t);
-        } finally {
-            if (cli != null) cli.cerrar();
+        Cliente cli = SesionPC3.getConexion();
+        if (cli == null){
+            throw new Exception("La conexion con el servidor se ha perdido.");
         }
+        cli.enviarFinalizacion(t);
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {

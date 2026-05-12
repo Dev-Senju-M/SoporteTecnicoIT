@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import sistema.sistemadesoportetecnicoit.PC4Application;
+import sistema.sistemadesoportetecnicoit.pc4.SesionPC4;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
 
 public class EstacionController {
@@ -58,14 +59,11 @@ public class EstacionController {
     }
 
     private Ticket solicitarTicket() throws Exception {
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            return cli.solicitarTicket("PRIORITARIO");
-        } finally {
-            if (cli != null) cli.cerrar();
+        Cliente cli = SesionPC4.getConexion();
+        if (cli==null){
+            throw new Exception("No hay conexión activa con el servidor.");
         }
+        return cli.solicitarTicket("URGENTE");
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {

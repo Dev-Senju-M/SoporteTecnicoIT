@@ -21,21 +21,25 @@ public class Conexion {
 
     public Conexion() throws IOException{
         cs = new Socket(HOST, PUERTO);
-        cs.setSoTimeout(Configuracion.TIMEOUT);
+        cs.setSoTimeout(0); //Pruebas
 
-        salida = new ObjectOutputStream(cs.getOutputStream());
-        entrada = new ObjectInputStream(cs.getInputStream());
+        this.salida = new ObjectOutputStream(cs.getOutputStream());
+        this.salida.flush();
+        this.entrada = new ObjectInputStream(cs.getInputStream());
     }
 
     public void enviar(Mensaje msg) throws IOException{
-        if (salida != null){
+        if (salida != null && cs != null && !cs.isClosed()){
             salida.writeObject(msg);
             salida.flush();
+            salida.reset();
+        } else{
+            throw new IOException("Socket cerrado o no esta disponible");
         }
     }
 
     public Mensaje recibir() throws IOException, ClassNotFoundException{
-        if (entrada != null){
+        if (entrada != null && cs != null && !cs.isClosed()){
             return (Mensaje) entrada.readObject();
         }
         return null;

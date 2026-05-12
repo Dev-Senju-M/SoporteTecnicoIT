@@ -58,14 +58,11 @@ public class EstacionController {
     }
 
     private Ticket solicitarTicket() throws Exception {
-        Cliente cli = null;
-        try {
-            cli = new Cliente();
-            cli.startClient();
-            return cli.solicitarTicket("GENERAL");
-        } finally {
-            if (cli != null) cli.cerrar();
+        Cliente cli = SesionPC3.getConexion();
+        if (cli==null){
+            throw new Exception("No hay conexion activa con el servidor.");
         }
+        return cli.solicitarTicket("GENERAL");
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
