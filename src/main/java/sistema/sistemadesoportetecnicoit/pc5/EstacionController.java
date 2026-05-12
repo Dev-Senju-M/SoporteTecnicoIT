@@ -9,6 +9,7 @@ import javafx.scene.control.ProgressIndicator;
 import sistema.sistemadesoportetecnicoit.PC5Application;
 import sistema.sistemadesoportetecnicoit.pc5.Cliente;
 import sistema.sistemadesoportetecnicoit.pc5.SesionPC5;
+import sistema.sistemadesoportetecnicoit.shared.chat.ChatController;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
 
 public class EstacionController {
@@ -58,6 +59,11 @@ public class EstacionController {
         th.setDaemon(true);
         th.start();
     }
+    @FXML
+    private void abrirChat() {
+        ChatController.abrir("PC5", SesionPC5.getConexion());
+    }
+
     //Si lees esto recuerdame cambiarlo
     private Ticket solicitarTicket() throws Exception {
         Cliente cli = SesionPC5.getConexion();

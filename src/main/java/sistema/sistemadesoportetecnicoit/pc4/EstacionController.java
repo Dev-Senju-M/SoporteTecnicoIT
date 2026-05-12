@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import sistema.sistemadesoportetecnicoit.PC4Application;
 import sistema.sistemadesoportetecnicoit.pc4.SesionPC4;
+import sistema.sistemadesoportetecnicoit.shared.chat.ChatController;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
 
 public class EstacionController {
@@ -56,6 +57,11 @@ public class EstacionController {
         }, "pc4-solicitar");
         th.setDaemon(true);
         th.start();
+    }
+
+    @FXML
+    private void abrirChat() {
+        ChatController.abrir("PC4", SesionPC4.getConexion());
     }
 
     private Ticket solicitarTicket() throws Exception {

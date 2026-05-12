@@ -36,5 +36,10 @@
         <Label fx:id="lblInfo"
                style="-fx-text-fill: #888888; -fx-font-size: 11px;"
                text=" "/>
+
+        <Button onAction="#abrirChat"
+                prefHeight="36.0" prefWidth="240.0"
+                style="-fx-background-color: #37474f; -fx-text-fill: #80cbc4; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"
+                text="Abrir Chat"/>
     </children>
 </VBox>
