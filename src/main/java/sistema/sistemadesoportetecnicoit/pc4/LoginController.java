@@ -44,21 +44,31 @@ public class LoginController {
         String nombre = txtNombre.getText() == null ? "" : txtNombre.getText().trim();
         if (nombre.isEmpty()) {
             lblError.setText("Ingrese su nombre para continuar.");
-            shake(txtNombre);
             return;
         }
-        try {
+
+        try{
             if (SesionPC4.getConexion() == null) {
                 Cliente c = new Cliente();
                 c.startClient();
                 SesionPC4.setConexion(c);
+                c.enviar(new sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje(
+                        sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje.CHAT_MENSAJE,
+                        "PC4 conectada (Prioridad - Técnico: " + nombre + ")",
+                        "PC4"
+                ));
+                System.out.println("Nueva conexion creada.");
+            } else{
+                System.out.println("Usando conexion existente.");
             }
             SesionPC4.setTecnico(nombre);
             PC4Application.cargarVista("pc4_estacion.fxml");
-        } catch (IOException e) {
+
+        }catch (IOException e){
             lblError.setText("Error: No se pudo conectar con el Servidor Central.");
-            System.err.println("Fallo de conexion: " + e.getMessage());
+            System.err.println("Fallo de conexión inicial: " + e.getMessage());
         }
+
     }
 
     @FXML private void toggleTema() {
