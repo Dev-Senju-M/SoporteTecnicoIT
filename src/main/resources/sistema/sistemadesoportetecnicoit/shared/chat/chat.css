@@ -1,0 +1,94 @@
+
+.chat-root {
+    -fx-background-color: #1e2530;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.chat-header {
+    -fx-background-color: #16202e;
+    -fx-padding: 10 16 10 16;
+    -fx-border-color: #2e3d52;
+    -fx-border-width: 0 0 1 0;
+}
+
+.chat-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7ec8e3;
+    -fx-letter-spacing: 0.8px;
+}
+
+.chat-subtitle {
+    -fx-font-size: 10px;
+    -fx-text-fill: #4a6a8a;
+}
+
+.chat-area {
+    -fx-background-color: #1e2530;
+    -fx-control-inner-background: #1e2530;
+    -fx-text-fill: #d0dce8;
+    -fx-font-size: 12px;
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-highlight-fill: #2e5070;
+    -fx-highlight-text-fill: #ffffff;
+    -fx-padding: 10 12 10 12;
+}
+
+.chat-area .scroll-pane {
+    -fx-background-color: #1e2530;
+}
+
+.chat-area .scroll-pane > .viewport {
+    -fx-background-color: #1e2530;
+}
+
+.chat-area .scroll-bar:vertical {
+    -fx-background-color: #16202e;
+}
+
+.chat-area .scroll-bar:vertical .thumb {
+    -fx-background-color: #2e4a66;
+    -fx-background-radius: 4;
+}
+
+.input-bar {
+    -fx-background-color: #16202e;
+    -fx-padding: 10 12 10 12;
+    -fx-border-color: #2e3d52;
+    -fx-border-width: 1 0 0 0;
+}
+
+.input-field {
+    -fx-background-color: #263040;
+    -fx-text-fill: #d0dce8;
+    -fx-prompt-text-fill: #4a6a8a;
+    -fx-border-color: #2e4a66;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 7 10 7 10;
+    -fx-font-size: 12px;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.input-field:focused {
+    -fx-border-color: #3a7ac8;
+    -fx-border-width: 1.5;
+    -fx-background-color: #2a3650;
+}
+
+.btn-send {
+    -fx-background-color: #1a6ec4;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 7 18 7 18;
+    -fx-min-width: 80px;
+}
+
+.btn-send:hover  { -fx-background-color: #1558a0; }
+.btn-send:pressed { -fx-background-color: #0f407a; }

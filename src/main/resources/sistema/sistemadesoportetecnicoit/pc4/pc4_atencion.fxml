@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,53 +10,47 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="640.0" prefWidth="560.0" spacing="12.0"
-      style="-fx-background-color: #2b2b2b;"
+      styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc4.AtencionController">
+    <stylesheets>
+        <String fx:value="/sistema/sistemadesoportetecnicoit/pc4/pc4.css"/>
+    </stylesheets>
     <padding>
         <Insets top="20.0" right="25.0" bottom="20.0" left="25.0"/>
     </padding>
     <children>
-        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ff8f00;"
-               text="Atencion de Ticket Prioritario"/>
+        <Label styleClass="screen-title-md" text="Atencion de Ticket Prioritario"/>
 
         <VBox spacing="3.0">
             <children>
-                <Label fx:id="lblTicketInfo"
-                       style="-fx-font-size: 12px; -fx-text-fill: #cccccc;" text="Ticket: -"/>
-                <Label fx:id="lblUsuario"
-                       style="-fx-font-size: 12px; -fx-text-fill: #cccccc;" text="Usuario: -"/>
-                <Label fx:id="lblTipo"
-                       style="-fx-font-size: 12px; -fx-text-fill: #cccccc;" text="Tipo: -"/>
-                <Label fx:id="lblMotivoOriginal"
-                       style="-fx-font-size: 11px; -fx-text-fill: #aaaaaa; -fx-font-style: italic;" text=""/>
+                <Label fx:id="lblTicketInfo" styleClass="info-label" text="Ticket: -"/>
+                <Label fx:id="lblUsuario"    styleClass="info-label" text="Usuario: -"/>
+                <Label fx:id="lblTipo"       styleClass="info-label" text="Tipo: -"/>
+                <Label fx:id="lblMotivoOriginal" styleClass="motivo-label" text=""/>
             </children>
         </VBox>
 
-        <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #cccccc;"
-               text="Diagnostico:"/>
+        <Label styleClass="section-label" text="Diagnostico:"/>
 
-        <ScrollPane fitToWidth="true" prefHeight="280.0"
-                    style="-fx-background: #2b2b2b; -fx-background-color: #2b2b2b;">
+        <ScrollPane fitToWidth="true" prefHeight="280.0" styleClass="scroll-dark">
             <content>
-                <VBox fx:id="contPreguntas" spacing="10.0"
-                      style="-fx-background-color: #2b2b2b;"/>
+                <VBox fx:id="contPreguntas" spacing="10.0" styleClass="preguntas-box"/>
             </content>
         </ScrollPane>
 
         <ProgressBar fx:id="barraSimulacion" visible="false" prefWidth="510.0" progress="0.0"/>
-        <Label fx:id="lblSimulacion"
-               style="-fx-text-fill: #aaaaaa; -fx-font-size: 11px;" text=" "/>
+        <Label fx:id="lblSimulacion" styleClass="muted-label" text=" "/>
 
         <HBox spacing="10.0" alignment="CENTER_LEFT">
             <children>
                 <Button fx:id="btnIniciar" onAction="#iniciarSimulacion"
                         prefHeight="38.0" prefWidth="170.0"
-                        style="-fx-background-color: #e65100; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;"
+                        styleClass="btn-iniciar"
                         text="Iniciar Atencion"/>
                 <Button fx:id="btnFinalizar" onAction="#finalizar" disable="true"
                         prefHeight="38.0" prefWidth="170.0"
-                        style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;"
+                        styleClass="btn-success"
                         text="Finalizar y Enviar"/>
             </children>
         </HBox>

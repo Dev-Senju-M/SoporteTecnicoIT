@@ -1,0 +1,137 @@
+/* ═══════════════════════════════════════════
+   PC4 — Soporte Prioritario  (acento naranja)
+   ═══════════════════════════════════════════ */
+
+.screen-root {
+    -fx-background-color: #2b2b2b;
+    -fx-background-radius: 6;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ── Títulos ──────────────────────────────── */
+.screen-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff8f00;
+}
+
+.screen-title-md {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff8f00;
+}
+
+.screen-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: #888888;
+}
+
+/* ── Etiquetas ────────────────────────────── */
+.info-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #cccccc;
+}
+
+.estado-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #cccccc;
+}
+
+.muted-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #888888;
+}
+
+.motivo-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #aaaaaa;
+    -fx-font-style: italic;
+}
+
+.section-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cccccc;
+}
+
+.error-label {
+    -fx-text-fill: #e57373;
+    -fx-font-size: 11px;
+}
+
+/* ── Campo de texto ───────────────────────── */
+.text-field-dark {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #666666;
+    -fx-border-color: #555555;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5 8 5 8;
+}
+
+.text-field-dark:focused {
+    -fx-border-color: #e65100;
+    -fx-border-width: 1.5;
+}
+
+/* ── Botones ──────────────────────────────── */
+.btn-primary {
+    -fx-background-color: #e65100;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover  { -fx-background-color: #bf360c; }
+.btn-primary:pressed { -fx-background-color: #8d2300; }
+
+.btn-iniciar {
+    -fx-background-color: #e65100;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-iniciar:hover  { -fx-background-color: #bf360c; }
+.btn-iniciar:pressed { -fx-background-color: #8d2300; }
+
+.btn-success {
+    -fx-background-color: #2e7d32;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-success:hover  { -fx-background-color: #1b5e20; }
+.btn-success:pressed { -fx-background-color: #0d3b12; }
+
+.btn-chat {
+    -fx-background-color: #37474f;
+    -fx-text-fill: #80cbc4;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-chat:hover  { -fx-background-color: #455a64; }
+.btn-chat:pressed { -fx-background-color: #263238; }
+
+/* ── ScrollPane oscuro ────────────────────── */
+.scroll-dark {
+    -fx-background: #2b2b2b;
+    -fx-background-color: #2b2b2b;
+}
+
+.scroll-dark > .viewport {
+    -fx-background-color: #2b2b2b;
+}
+
+.preguntas-box {
+    -fx-background-color: #2b2b2b;
+}

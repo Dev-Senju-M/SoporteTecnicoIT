@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,28 +8,27 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" prefHeight="300.0" prefWidth="380.0" spacing="14.0"
-      style="-fx-background-color: #2b2b2b; -fx-background-radius: 6;"
+      styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc4.LoginController">
+    <stylesheets>
+        <String fx:value="/sistema/sistemadesoportetecnicoit/pc4/pc4.css"/>
+    </stylesheets>
     <padding>
         <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
     </padding>
     <children>
-        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #ff8f00;"
-               text="PC4 - Soporte Prioritario"/>
-        <Label style="-fx-font-size: 11px; -fx-text-fill: #888888;"
-               text="Identifiquese para iniciar la sesion"/>
+        <Label styleClass="screen-title" text="PC4 - Soporte Prioritario"/>
+        <Label styleClass="screen-subtitle" text="Identifiquese para iniciar la sesion"/>
 
         <TextField fx:id="txtNombre" promptText="Nombre del tecnico"
-                   style="-fx-background-color: #3c3c3c; -fx-text-fill: white;"/>
+                   styleClass="text-field-dark"/>
 
         <Button onAction="#iniciar"
                 prefHeight="40.0" prefWidth="200.0"
-                style="-fx-background-color: #e65100; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"
+                styleClass="btn-primary"
                 text="Iniciar Sesion"/>
 
-        <Label fx:id="lblError"
-               style="-fx-text-fill: #e57373; -fx-font-size: 11px;"
-               text=" "/>
+        <Label fx:id="lblError" styleClass="error-label" text=" "/>
     </children>
 </VBox>
