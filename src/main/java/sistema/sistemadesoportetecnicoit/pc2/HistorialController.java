@@ -88,9 +88,19 @@ public class HistorialController {
                 Platform.runLater(() -> {
                     if (resultado == null || resultado.isEmpty()) {
                         lblEstado.setText("Sin historial para DPI: " + dpi);
+                        Alert alerta = new Alert(Alert.AlertType.WARNING);
+                        alerta.setTitle("Consulta de Historial");
+                        alerta.setHeaderText(null);
+                        alerta.setContentText("No se encontró ningún registro asociado al DPI: " + dpi);
+                        alerta.showAndWait();
                     } else {
                         datos.setAll(resultado);
                         lblEstado.setText("Se encontraron " + resultado.size() + " ticket(s).");
+                        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                        alerta.setTitle("Consulta Exitosa");
+                        alerta.setHeaderText(null);
+                        alerta.setContentText("Se han cargado correctamente " + resultado.size() + " registros.");
+                        alerta.showAndWait();
                     }
                 });
             } catch (Exception ex) {

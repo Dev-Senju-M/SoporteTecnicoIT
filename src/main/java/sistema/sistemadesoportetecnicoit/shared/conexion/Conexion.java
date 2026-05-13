@@ -1,6 +1,7 @@
 package sistema.sistemadesoportetecnicoit.shared.conexion;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import sistema.sistemadesoportetecnicoit.shared.chat.ChatHistorial;
 import sistema.sistemadesoportetecnicoit.shared.config.Configuracion;
 import sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje;
@@ -44,6 +45,15 @@ public class Conexion {
                     Mensaje m = (Mensaje) entrada.readObject();
                     if (m == null) break;
 
+                    if (m.getTipo() == TipoMensaje.SERVIDOR_DETENIDO) {
+                        Platform.runLater(() -> {
+                            mostrarAlertaCritica("Servidor Desconectado",
+                                    "El servidor central (PC1) ha finalizado la sesión.\n" +
+                                            "La aplicación se cerrará por seguridad.");
+                        });
+                        break;
+                    }
+
                     if (m.getTipo() == TipoMensaje.CHAT_MENSAJE) {
                         Platform.runLater(() ->
                                 ChatHistorial.agregar(m.getOrigen(), (String) m.getPayload()));
@@ -53,9 +63,11 @@ public class Conexion {
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
-                } catch (Exception e) {
-                    System.err.println("[Conexion] Listener detenido ("
-                            + e.getClass().getSimpleName() + "): " + e.getMessage());
+                }catch(Exception e){
+                    Platform.runLater(() -> {
+                        mostrarAlertaCritica("Error de Comunicación",
+                                "Se ha perdido la conexión física con el servidor.");
+                    });
                     break;
                 }
             }
@@ -92,5 +104,15 @@ public class Conexion {
         } catch (IOException e) {
             System.err.println("Error al cerrar: " + e.getMessage());
         }
+    }
+    private void mostrarAlertaCritica(String titulo, String mensaje){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+
+        alert.showAndWait();
+
+        System.exit(0);
     }
 }
