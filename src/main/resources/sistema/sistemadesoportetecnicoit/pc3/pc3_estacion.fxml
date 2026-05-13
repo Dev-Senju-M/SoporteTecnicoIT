@@ -1,41 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="CENTER" prefHeight="380.0" prefWidth="440.0" spacing="16.0"
+<VBox fx:id="screenRoot" prefHeight="420.0" prefWidth="440.0" spacing="0.0"
       styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc3.EstacionController">
     <stylesheets>
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc3/pc3.css"/>
     </stylesheets>
-    <padding>
-        <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
-    </padding>
-    <children>
-        <Label styleClass="screen-title-md" text="Estacion de Soporte General"/>
-        <Label fx:id="lblTecnico" styleClass="info-label" text="Tecnico: -"/>
-        <Label styleClass="screen-subtitle" text="Atiende: Hardware, Software, Conectividad"/>
+
+    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <FontIcon iconLiteral="fas-headset" iconSize="16" styleClass="header-icon"/>
+            <VBox spacing="2.0">
+                <Label fx:id="lblTecnico" styleClass="header-title" text="Tecnico: —"/>
+                <Label styleClass="header-subtitle" text="Soporte General"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <VBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="16.0" styleClass="screen-body">
+        <Label styleClass="screen-subtitle" text="Atiende: Hardware · Software · Conectividad"/>
 
         <Label fx:id="lblEstado" styleClass="estado-label" text="En espera de tickets..."/>
 
         <ProgressIndicator fx:id="spinner" visible="false" prefHeight="40.0" prefWidth="40.0"/>
 
         <Button fx:id="btnAtender" onAction="#atenderSiguiente"
-                prefHeight="44.0" prefWidth="240.0"
+                prefHeight="44.0" prefWidth="260.0"
                 styleClass="btn-primary"
-                text="Atender Siguiente Ticket"/>
+                text="Atender Siguiente Ticket">
+            <graphic>
+                <FontIcon iconLiteral="fas-headset" iconSize="14" iconColor="#ffffff"/>
+            </graphic>
+        </Button>
 
         <Label fx:id="lblInfo" styleClass="muted-label" text=" "/>
 
         <Button onAction="#abrirChat"
-                prefHeight="36.0" prefWidth="240.0"
+                prefHeight="36.0" prefWidth="260.0"
                 styleClass="btn-chat"
-                text="Abrir Chat"/>
-    </children>
+                text="Abrir Chat">
+            <graphic>
+                <FontIcon iconLiteral="fas-comments" iconSize="13" styleClass="icon-chat"/>
+            </graphic>
+        </Button>
+    </VBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+        <Label styleClass="footer-label" text="PC3 — Soporte General"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">
+            <graphic>
+                <FontIcon fx:id="iconTema" iconLiteral="fas-sun" iconSize="13" styleClass="icon-ghost"/>
+            </graphic>
+        </Button>
+    </HBox>
 </VBox>

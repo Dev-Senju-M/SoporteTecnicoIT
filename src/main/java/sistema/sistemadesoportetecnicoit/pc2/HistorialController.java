@@ -1,5 +1,7 @@
 package sistema.sistemadesoportetecnicoit.pc2;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,13 +13,19 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 import sistema.sistemadesoportetecnicoit.PC2Application;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
+import sistema.sistemadesoportetecnicoit.shared.utils.TemaManager;
 
 import java.util.List;
 
 public class HistorialController {
 
+    @FXML private VBox screenRoot;
+    @FXML private VBox panelHeader;
     @FXML private TextField txtDpiBuscar;
     @FXML private TableView<Ticket> tablaTickets;
     @FXML private TableColumn<Ticket, String> colTicketId;
@@ -27,11 +35,28 @@ public class HistorialController {
     @FXML private TableColumn<Ticket, String> colTipo;
     @FXML private TableColumn<Ticket, String> colTiempoTotal;
     @FXML private Label lblEstado;
+    @FXML private FontIcon iconTema;
 
     private final ObservableList<Ticket> datos = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        // Animación de entrada
+        screenRoot.setOpacity(0);
+        panelHeader.setTranslateY(-12);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(300), screenRoot);
+        fade.setFromValue(0); fade.setToValue(1);
+
+        TranslateTransition slide = new TranslateTransition(Duration.millis(280), panelHeader);
+        slide.setFromY(-12); slide.setToY(0);
+
+        fade.play(); slide.play();
+
+        // Tema
+        TemaManager.aplicar(screenRoot);
+        actualizarIconTema();
+
         colTicketId   .setCellValueFactory(new PropertyValueFactory<>("ticketId"));
         colDpi        .setCellValueFactory(new PropertyValueFactory<>("dpi"));
         colNombre     .setCellValueFactory(new PropertyValueFactory<>("nombreApellido"));
@@ -40,11 +65,9 @@ public class HistorialController {
         colTiempoTotal.setCellValueFactory(cd -> {
             Ticket t = cd.getValue();
             if (t == null) return new SimpleStringProperty("");
-            double minutos = t.getDuracionAtencionMinutos();
-            if (minutos < 0 || minutos > 10000){
-                return new SimpleStringProperty("0.00 min");
-            }
-            return new SimpleStringProperty(String.format("%.2f min", minutos));
+            double min = t.getDuracionAtencionMinutos();
+            if (min < 0 || min > 10000) return new SimpleStringProperty("0.00 min");
+            return new SimpleStringProperty(String.format("%.2f min", min));
         });
 
         tablaTickets.setItems(datos);
@@ -54,14 +77,8 @@ public class HistorialController {
     @FXML
     private void buscar() {
         String dpi = txtDpiBuscar.getText() == null ? "" : txtDpiBuscar.getText().trim();
-        if (dpi.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "DPI vacio", "Ingrese un DPI.");
-            return;
-        }
-        if (!dpi.matches("\\d{13}")) {
-            mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido", "El DPI debe tener 13 digitos.");
-            return;
-        }
+        if (dpi.isEmpty()) { mostrarAlerta(Alert.AlertType.WARNING, "DPI vacio", "Ingrese un DPI."); return; }
+        if (!dpi.matches("\\d{13}")) { mostrarAlerta(Alert.AlertType.WARNING, "DPI invalido", "El DPI debe tener 13 digitos."); return; }
 
         lblEstado.setText("Consultando al servidor...");
         datos.clear();
@@ -74,7 +91,7 @@ public class HistorialController {
                         lblEstado.setText("Sin historial para DPI: " + dpi);
                     } else {
                         datos.setAll(resultado);
-                        lblEstado.setText("Se encontraron " + resultado.size() + " ticket(s) para DPI " + dpi + ".");
+                        lblEstado.setText("Se encontraron " + resultado.size() + " ticket(s).");
                     }
                 });
             } catch (Exception ex) {
@@ -92,22 +109,22 @@ public class HistorialController {
 
     private List<Ticket> consultarServidor(String dpi) throws Exception {
         Cliente cli = SesionPC2.getConexion();
-        if (cli==null){
-            throw new Exception("No hay conexion activa con el servidor central.");
-        }
+        if (cli == null) throw new Exception("No hay conexion activa con el servidor central.");
         return cli.buscarPorDpi(dpi);
     }
 
-    @FXML
-    private void limpiar() {
-        txtDpiBuscar.clear();
-        datos.clear();
-        lblEstado.setText(" ");
-    }
+    @FXML private void limpiar() { txtDpiBuscar.clear(); datos.clear(); lblEstado.setText(" "); }
+    @FXML private void regresarMenu() { PC2Application.cargarVista("pc2_menu.fxml"); }
 
     @FXML
-    private void regresarMenu() {
-        PC2Application.cargarVista("pc2_menu.fxml");
+    private void toggleTema() {
+        TemaManager.toggle();
+        TemaManager.aplicar(screenRoot);
+        actualizarIconTema();
+    }
+
+    private void actualizarIconTema() {
+        iconTema.setIconLiteral(TemaManager.esModoClaro() ? "fas-moon" : "fas-sun");
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
