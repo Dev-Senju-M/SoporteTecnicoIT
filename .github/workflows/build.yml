@@ -1,0 +1,76 @@
+name: Build JARs
+
+on:
+  push:
+    branches: [ main ]
+    tags:     [ 'v*' ]          # v1.0, v1.1, etc.
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest     # Windows para que las DLL nativas sean las correctas
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compilar y empaquetar
+        run: mvn package -DskipTests
+
+      # ── Subir JARs como artefactos del workflow ──────────────────────
+      - name: Subir PC2.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: PC2
+          path: target/PC2.jar
+
+      - name: Subir PC3.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: PC3
+          path: target/PC3.jar
+
+      - name: Subir PC4.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: PC4
+          path: target/PC4.jar
+
+      - name: Subir PC5.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: PC5
+          path: target/PC5.jar
+
+  # ── Release automático al hacer push de un tag v* ───────────────────
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Descargar todos los JARs
+        uses: actions/download-artifact@v4
+        with:
+          path: jars
+
+      - name: Crear Release con los JARs
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            jars/PC2/PC2.jar
+            jars/PC3/PC3.jar
+            jars/PC4/PC4.jar
+            jars/PC5/PC5.jar
+          generate_release_notes: true
