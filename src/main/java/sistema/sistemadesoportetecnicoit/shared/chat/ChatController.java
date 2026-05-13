@@ -59,14 +59,12 @@ public class ChatController {
         String texto = txtMensaje.getText() == null ? "" : txtMensaje.getText().trim();
         if (texto.isEmpty()) return;
 
-        ChatHistorial.agregar(origen, texto);
         txtMensaje.clear();
 
         if (conexion != null) {
-            String textoFinal = texto;
             Thread th = new Thread(() -> {
                 try {
-                    conexion.enviar(new Mensaje(TipoMensaje.CHAT_MENSAJE, textoFinal, origen));
+                    conexion.enviar(new Mensaje(TipoMensaje.CHAT_MENSAJE, texto, origen));
                 } catch (IOException e) {
                     System.err.println("[Chat] Error al enviar: " + e.getMessage());
                 }
