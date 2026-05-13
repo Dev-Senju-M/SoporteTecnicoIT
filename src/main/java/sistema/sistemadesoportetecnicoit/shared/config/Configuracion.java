@@ -4,7 +4,8 @@ public class Configuracion {
 
     private Configuracion() { /* Utils Class */ }
 
-    public static final String HOST      = "172.20.10.3";
+    //public static final String HOST      = "172.20.10.3";
+    public static final String HOST      = "10.193.51.124";
     public static final int    PUERTO_PC1 = 5000;
     public static final int    TIMEOUT    = 5000;
 
