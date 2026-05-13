@@ -97,7 +97,7 @@ public class EstacionController {
     private Ticket solicitarTicket() throws Exception {
         Cliente cli = SesionPC4.getConexion();
         if (cli == null) throw new Exception("No hay conexion activa con el servidor.");
-        return cli.solicitarTicket("PRIORIDAD");
+        return cli.solicitarTicket("URGENTE");
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
