@@ -18,7 +18,7 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc5/pc5.css"/>
     </stylesheets>
 
-    <VBox fx:id="panelHeader" spacing="6.0" styleClass="panel-header">
+    <VBox fx:id="panelHeader" maxWidth="Infinity" spacing="6.0" styleClass="panel-header">
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <FontIcon iconLiteral="fas-ticket-alt" iconSize="16" styleClass="header-icon"/>
             <VBox spacing="2.0" HBox.hgrow="ALWAYS">
@@ -32,11 +32,11 @@
         </HBox>
     </VBox>
 
-    <VBox VBox.vgrow="ALWAYS" spacing="0.0" styleClass="screen-body">
+    <VBox VBox.vgrow="ALWAYS" maxWidth="Infinity" spacing="0.0" styleClass="screen-body">
         <Label styleClass="section-label" text="DIAGNOSTICO"/>
         <Region prefHeight="8.0"/>
 
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-dark">
+        <ScrollPane maxWidth="Infinity" fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-dark">
             <content>
                 <VBox fx:id="contPreguntas" spacing="12.0" styleClass="preguntas-box"/>
             </content>
@@ -48,7 +48,7 @@
         <Label fx:id="lblSimulacion" styleClass="muted-label" text=" "/>
     </VBox>
 
-    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="panel-footer">
+    <HBox maxWidth="Infinity" alignment="CENTER_LEFT" spacing="10.0" styleClass="panel-footer">
         <Button fx:id="btnIniciar" onAction="#iniciarSimulacion"
                 prefHeight="36.0"
                 styleClass="btn-primary"

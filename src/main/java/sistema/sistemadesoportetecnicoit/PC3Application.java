@@ -19,6 +19,7 @@ public class PC3Application extends Application {
         stage.setTitle("PC3 - Soporte Nivel 1");
         cargarVista("pc3_login.fxml");
         stage.show();
+        stage.setMaximized(true);
     }
 
     public static void cargarVista(String fxml) {
@@ -31,10 +32,10 @@ public class PC3Application extends Application {
 
             if (stagePrincipal.getScene() == null) {
                 stagePrincipal.setScene(new Scene(root));
+                stagePrincipal.sizeToScene();
             } else {
                 stagePrincipal.getScene().setRoot(root);
             }
-            stagePrincipal.sizeToScene();
         } catch (IOException e) {
             e.printStackTrace();
         }

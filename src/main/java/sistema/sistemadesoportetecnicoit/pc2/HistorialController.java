@@ -41,7 +41,6 @@ public class HistorialController {
 
     @FXML
     public void initialize() {
-        // Animación de entrada
         screenRoot.setOpacity(0);
         panelHeader.setTranslateY(-12);
 
@@ -53,7 +52,6 @@ public class HistorialController {
 
         fade.play(); slide.play();
 
-        // Tema
         TemaManager.aplicar(screenRoot);
         actualizarIconTema();
 
@@ -70,6 +68,7 @@ public class HistorialController {
             return new SimpleStringProperty(String.format("%.2f min", min));
         });
 
+        tablaTickets.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tablaTickets.setItems(datos);
         tablaTickets.setPlaceholder(new Label("Sin resultados. Ingrese un DPI y presione Buscar."));
     }

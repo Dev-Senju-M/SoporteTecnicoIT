@@ -16,7 +16,7 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc2/pc2.css"/>
     </stylesheets>
 
-    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+    <VBox fx:id="panelHeader" maxWidth="Infinity" spacing="4.0" styleClass="panel-header">
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <FontIcon iconLiteral="fas-headset" iconSize="18" styleClass="header-icon"/>
             <VBox spacing="2.0">
@@ -26,7 +26,7 @@
         </HBox>
     </VBox>
 
-    <VBox VBox.vgrow="ALWAYS" spacing="0.0" styleClass="screen-body">
+    <VBox VBox.vgrow="ALWAYS" maxWidth="Infinity" spacing="0.0" styleClass="screen-body">
         <Label styleClass="section-label" text="ACCIONES"/>
         <Region prefHeight="12.0"/>
 
@@ -81,7 +81,7 @@
         </Button>
     </VBox>
 
-    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+    <HBox maxWidth="Infinity" alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
         <Label fx:id="lblServidor" text="Servidor: —"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">

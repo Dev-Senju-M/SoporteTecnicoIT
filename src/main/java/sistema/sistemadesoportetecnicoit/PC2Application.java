@@ -19,6 +19,7 @@ public class PC2Application extends Application {
         primaryStage.setTitle("PC2 - Registro de Tickets");
         cargarVista("pc2_menu.fxml");
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
 
     public static void cargarVista(String fxml){
@@ -31,10 +32,10 @@ public class PC2Application extends Application {
 
             if (primaryStage.getScene() == null){
                 primaryStage.setScene(new Scene(root));
+                primaryStage.sizeToScene();
             } else {
                 primaryStage.getScene().setRoot(root);
             }
-            primaryStage.sizeToScene();
         } catch (IOException e){
             e.printStackTrace();
         }

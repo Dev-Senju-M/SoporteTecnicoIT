@@ -19,7 +19,7 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc2/pc2.css"/>
     </stylesheets>
 
-    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+    <VBox fx:id="panelHeader" maxWidth="Infinity" spacing="4.0" styleClass="panel-header">
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <FontIcon iconLiteral="fas-history" iconSize="16" styleClass="header-icon"/>
             <VBox spacing="2.0">
@@ -29,11 +29,11 @@
         </HBox>
     </VBox>
 
-    <VBox spacing="0.0" styleClass="search-section">
+    <VBox maxWidth="Infinity" spacing="0.0" styleClass="search-section">
         <Label styleClass="section-label" text="BUSQUEDA POR DPI"/>
         <Region prefHeight="8.0"/>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
-            <TextField fx:id="txtDpiBuscar" prefWidth="220.0" promptText="13 digitos"/>
+            <TextField fx:id="txtDpiBuscar" HBox.hgrow="ALWAYS" promptText="13 digitos"/>
             <Button onAction="#buscar"
                     prefHeight="36.0" prefWidth="100.0"
                     styleClass="btn-primary-sm"
@@ -53,7 +53,7 @@
         </HBox>
     </VBox>
 
-    <TableView fx:id="tablaTickets" VBox.vgrow="ALWAYS">
+    <TableView fx:id="tablaTickets" maxWidth="Infinity" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colTicketId"    prefWidth="100.0" text="Ticket ID"/>
             <TableColumn fx:id="colDpi"         prefWidth="130.0" text="DPI"/>
@@ -68,7 +68,7 @@
         </placeholder>
     </TableView>
 
-    <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="panel-footer">
+    <HBox maxWidth="Infinity" alignment="CENTER_LEFT" spacing="12.0" styleClass="panel-footer">
         <Button onAction="#regresarMenu"
                 prefHeight="34.0" prefWidth="110.0"
                 styleClass="btn-secondary-sm"

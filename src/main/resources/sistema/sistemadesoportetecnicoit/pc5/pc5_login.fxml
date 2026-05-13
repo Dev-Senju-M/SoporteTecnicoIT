@@ -17,7 +17,7 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc5/pc5.css"/>
     </stylesheets>
 
-    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+    <VBox fx:id="panelHeader" maxWidth="Infinity" spacing="4.0" styleClass="panel-header">
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <FontIcon iconLiteral="fas-server" iconSize="18" styleClass="header-icon"/>
             <VBox spacing="2.0">
@@ -27,7 +27,7 @@
         </HBox>
     </VBox>
 
-    <VBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="16.0" styleClass="screen-body">
+    <VBox VBox.vgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER" spacing="16.0" styleClass="screen-body">
         <FontIcon iconLiteral="fas-server" iconSize="48" styleClass="login-icon"/>
         <Label styleClass="section-label" text="IDENTIFICACION DE TECNICO"/>
         <Label styleClass="screen-subtitle" text="Ingrese su nombre para iniciar sesion"/>
@@ -46,7 +46,7 @@
         <Label fx:id="lblError" styleClass="error-label" text=" "/>
     </VBox>
 
-    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+    <HBox maxWidth="Infinity" alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
         <Label styleClass="footer-label" text="Sistema de Soporte Tecnico IT"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">

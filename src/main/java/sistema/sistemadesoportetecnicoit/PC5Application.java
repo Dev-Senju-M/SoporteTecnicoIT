@@ -19,6 +19,7 @@ public class PC5Application extends Application {
         stage.setTitle("PC5 - Soporte Especial");
         cargarVista("pc5_login.fxml");
         stage.show();
+        stage.setMaximized(true);
     }
 
     public static void cargarVista(String fxml) {
@@ -31,10 +32,10 @@ public class PC5Application extends Application {
 
             if (stagePrincipal.getScene() == null) {
                 stagePrincipal.setScene(new Scene(root));
+                stagePrincipal.sizeToScene();
             } else {
                 stagePrincipal.getScene().setRoot(root);
             }
-            stagePrincipal.sizeToScene();
         } catch (IOException e) {
             e.printStackTrace();
         }

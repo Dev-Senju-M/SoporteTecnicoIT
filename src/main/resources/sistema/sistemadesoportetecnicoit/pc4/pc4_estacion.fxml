@@ -17,7 +17,7 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc4/pc4.css"/>
     </stylesheets>
 
-    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+    <VBox fx:id="panelHeader" maxWidth="Infinity" spacing="4.0" styleClass="panel-header">
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <FontIcon iconLiteral="fas-shield-alt" iconSize="16" styleClass="header-icon"/>
             <VBox spacing="2.0">
@@ -27,7 +27,7 @@
         </HBox>
     </VBox>
 
-    <VBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="16.0" styleClass="screen-body">
+    <VBox VBox.vgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER" spacing="16.0" styleClass="screen-body">
         <Label styleClass="screen-subtitle" text="Atiende: Accesos · Incidente Critico"/>
 
         <Label fx:id="lblEstado" styleClass="estado-label" text="En espera de tickets prioritarios..."/>
@@ -55,7 +55,7 @@
         </Button>
     </VBox>
 
-    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+    <HBox maxWidth="Infinity" alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
         <Label styleClass="footer-label" text="PC4 — Soporte Prioritario"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">
