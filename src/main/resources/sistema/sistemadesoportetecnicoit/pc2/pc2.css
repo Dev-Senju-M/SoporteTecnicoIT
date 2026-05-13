@@ -1,0 +1,292 @@
+/* ═══════════════════════════════════════════
+   PC2 — Sistema de Soporte Tecnico IT
+   ═══════════════════════════════════════════ */
+
+/* ── Raíz ─────────────────────────────────── */
+.screen-root {
+    -fx-background-color: #f0f2f5;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ── Encabezado ───────────────────────────── */
+.panel-header {
+    -fx-background-color: #1a3a5c;
+    -fx-padding: 14 20 14 20;
+}
+
+.header-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1.5px;
+}
+
+.header-subtitle {
+    -fx-text-fill: #a8c4e0;
+    -fx-font-size: 11px;
+}
+
+/* ── Cuerpo principal ─────────────────────── */
+.screen-body {
+    -fx-padding: 20 24 16 24;
+    -fx-background-color: #f0f2f5;
+}
+
+/* ── Sección de búsqueda ─────────────────── */
+.search-section {
+    -fx-padding: 16 24 12 24;
+    -fx-background-color: #e8ecf0;
+    -fx-border-color: #d0d7de;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ── Pie de página ───────────────────────── */
+.panel-footer {
+    -fx-background-color: #e4e8ed;
+    -fx-padding: 8 20 8 20;
+    -fx-border-color: #c8d0d9;
+    -fx-border-width: 1 0 0 0;
+}
+
+.panel-footer > .label {
+    -fx-text-fill: #5a6a7a;
+    -fx-font-size: 11px;
+}
+
+/* ── Etiquetas ───────────────────────────── */
+.section-label {
+    -fx-text-fill: #1a3a5c;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1.2px;
+}
+
+.field-label {
+    -fx-text-fill: #3d5166;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.desc-label {
+    -fx-text-fill: #7a8c9e;
+    -fx-font-size: 11px;
+    -fx-padding: 0 0 0 2;
+}
+
+.placeholder-label {
+    -fx-text-fill: #9aaab8;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* ── Panel de enrutamiento ───────────────── */
+.routing-panel {
+    -fx-background-color: #dce8f5;
+    -fx-border-color: #5b9bd5;
+    -fx-border-width: 0 0 0 4;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 4;
+}
+
+.routing-panel > .section-label {
+    -fx-text-fill: #1a3a5c;
+}
+
+.routing-panel > .label {
+    -fx-text-fill: #1a4d80;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ── Campos de texto ─────────────────────── */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b0bec8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12px;
+    -fx-text-fill: #1e2d3d;
+    -fx-prompt-text-fill: #a0b0bc;
+}
+
+.text-field:focused {
+    -fx-border-color: #2e7dcf;
+    -fx-border-width: 1.5;
+    -fx-background-color: #f7faff;
+    -fx-effect: dropshadow(gaussian, rgba(46,125,207,0.18), 4, 0, 0, 0);
+}
+
+/* ── ComboBox ────────────────────────────── */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b0bec8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-size: 12px;
+    -fx-text-fill: #1e2d3d;
+}
+
+.combo-box:focused {
+    -fx-border-color: #2e7dcf;
+    -fx-border-width: 1.5;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #1e2d3d;
+    -fx-padding: 4 8 4 8;
+}
+
+/* ── Botón primario ──────────────────────── */
+.btn-primary {
+    -fx-background-color: #1a6ec4;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 0 18 0 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 3, 0, 0, 1);
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1558a0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 5, 0, 0, 2);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #0f407a;
+    -fx-effect: none;
+}
+
+/* ── Botón primario pequeño ──────────────── */
+.btn-primary-sm {
+    -fx-background-color: #1a6ec4;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 0 14 0 14;
+}
+
+.btn-primary-sm:hover {
+    -fx-background-color: #1558a0;
+}
+
+.btn-primary-sm:pressed {
+    -fx-background-color: #0f407a;
+}
+
+/* ── Botón secundario ────────────────────── */
+.btn-secondary {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a6ec4;
+    -fx-border-color: #1a6ec4;
+    -fx-border-width: 1.5;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 0 18 0 18;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #eaf2fc;
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: #d0e4f7;
+}
+
+/* ── Botón secundario pequeño ────────────── */
+.btn-secondary-sm {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #3d6b99;
+    -fx-border-color: #3d6b99;
+    -fx-border-width: 1;
+    -fx-font-size: 12px;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 0 12 0 12;
+}
+
+.btn-secondary-sm:hover {
+    -fx-background-color: #eaf0f8;
+}
+
+.btn-secondary-sm:pressed {
+    -fx-background-color: #d5e4f2;
+}
+
+/* ── Botón fantasma ──────────────────────── */
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7a8c9e;
+    -fx-font-size: 12px;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 0 10 0 10;
+}
+
+.btn-ghost:hover {
+    -fx-background-color: #dde3ea;
+    -fx-text-fill: #3d5166;
+}
+
+.btn-ghost:pressed {
+    -fx-background-color: #cdd5de;
+}
+
+/* ── TableView ───────────────────────────── */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #c8d0d9;
+    -fx-border-width: 0;
+    -fx-table-cell-border-color: #e4e8ed;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1a3a5c;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: #2a5080;
+    -fx-border-width: 0 1 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #e0eaf4;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 0.5px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #eaecef;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f6f8fa;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #d0e8fc;
+}
+
+.table-view .table-row-cell:selected .text {
+    -fx-fill: #0d2d50;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #2d3e50;
+    -fx-font-size: 12px;
+    -fx-padding: 5 8 5 8;
+}
