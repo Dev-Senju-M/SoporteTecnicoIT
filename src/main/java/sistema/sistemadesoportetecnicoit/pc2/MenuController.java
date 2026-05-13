@@ -23,14 +23,6 @@ public class MenuController {
                     cli.startClient();
                     SesionPC2.setConexion(cli);
 
-                    sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje saludo =
-                            new sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje(
-                                    sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje.CHAT_MENSAJE,
-                                    "Sistema PC2 Iniciado",
-                                    "PC2"
-                            );
-                    cli.enviar(saludo);
-
                     Platform.runLater(() ->
                             lblServidor.setText("Servidor: Conectado a " + Configuracion.HOST));
 

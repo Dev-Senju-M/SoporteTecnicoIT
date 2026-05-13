@@ -1,26 +1,48 @@
 package sistema.sistemadesoportetecnicoit.pc4;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 import sistema.sistemadesoportetecnicoit.PC4Application;
-import sistema.sistemadesoportetecnicoit.pc4.SesionPC4;
 import sistema.sistemadesoportetecnicoit.shared.chat.ChatController;
 import sistema.sistemadesoportetecnicoit.shared.models.Ticket;
+import sistema.sistemadesoportetecnicoit.shared.utils.TemaManager;
 
 public class EstacionController {
 
+    @FXML private VBox screenRoot;
+    @FXML private VBox panelHeader;
     @FXML private Label lblTecnico;
     @FXML private Label lblEstado;
     @FXML private Label lblInfo;
     @FXML private Button btnAtender;
     @FXML private ProgressIndicator spinner;
+    @FXML private FontIcon iconTema;
 
     @FXML
     public void initialize() {
+        screenRoot.setOpacity(0);
+        panelHeader.setTranslateY(-12);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(300), screenRoot);
+        fade.setFromValue(0); fade.setToValue(1);
+
+        TranslateTransition slide = new TranslateTransition(Duration.millis(280), panelHeader);
+        slide.setFromY(-12); slide.setToY(0);
+
+        fade.play(); slide.play();
+
+        TemaManager.aplicar(screenRoot);
+        actualizarIconTema();
+
         lblTecnico.setText("Tecnico: " + SesionPC4.getTecnico());
     }
 
@@ -28,7 +50,7 @@ public class EstacionController {
     private void atenderSiguiente() {
         btnAtender.setDisable(true);
         spinner.setVisible(true);
-        lblEstado.setText("Solicitando ticket prioritario al servidor...");
+        lblEstado.setText("Solicitando ticket al servidor...");
 
         Thread th = new Thread(() -> {
             try {
@@ -36,7 +58,7 @@ public class EstacionController {
                 Platform.runLater(() -> {
                     spinner.setVisible(false);
                     if (t == null) {
-                        lblEstado.setText("No hay tickets prioritarios en cola. Reintente.");
+                        lblEstado.setText("No hay tickets en cola. Reintente.");
                         btnAtender.setDisable(false);
                     } else {
                         t.marcarInicioAtencion();
@@ -59,25 +81,29 @@ public class EstacionController {
         th.start();
     }
 
+    @FXML private void abrirChat() { ChatController.abrir("PC4", SesionPC4.getConexion()); }
+
     @FXML
-    private void abrirChat() {
-        ChatController.abrir("PC4", SesionPC4.getConexion());
+    private void toggleTema() {
+        TemaManager.toggle();
+        TemaManager.aplicar(screenRoot);
+        actualizarIconTema();
+    }
+
+    private void actualizarIconTema() {
+        iconTema.setIconLiteral(TemaManager.esModoClaro() ? "fas-moon" : "fas-sun");
     }
 
     private Ticket solicitarTicket() throws Exception {
         Cliente cli = SesionPC4.getConexion();
-        if (cli==null){
-            throw new Exception("No hay conexión activa con el servidor.");
-        }
-        return cli.solicitarTicket("URGENTE");
+        if (cli == null) throw new Exception("No hay conexion activa con el servidor.");
+        return cli.solicitarTicket("PRIORIDAD");
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Runnable r = () -> {
             Alert a = new Alert(tipo);
-            a.setTitle(titulo);
-            a.setHeaderText(null);
-            a.setContentText(mensaje);
+            a.setTitle(titulo); a.setHeaderText(null); a.setContentText(mensaje);
             a.showAndWait();
         };
         if (Platform.isFxApplicationThread()) r.run();

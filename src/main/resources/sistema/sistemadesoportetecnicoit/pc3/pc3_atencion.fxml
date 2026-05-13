@@ -1,58 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="640.0" prefWidth="560.0" spacing="12.0"
+<VBox fx:id="screenRoot" prefHeight="660.0" prefWidth="580.0" spacing="0.0"
       styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc3.AtencionController">
     <stylesheets>
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc3/pc3.css"/>
     </stylesheets>
-    <padding>
-        <Insets top="20.0" right="25.0" bottom="20.0" left="25.0"/>
-    </padding>
-    <children>
-        <Label styleClass="screen-title-md" text="Atencion de Ticket"/>
 
-        <VBox spacing="3.0">
-            <children>
-                <Label fx:id="lblTicketInfo" styleClass="info-label" text="Ticket: -"/>
-                <Label fx:id="lblUsuario"    styleClass="info-label" text="Usuario: -"/>
-                <Label fx:id="lblTipo"       styleClass="info-label" text="Tipo: -"/>
+    <VBox fx:id="panelHeader" spacing="6.0" styleClass="panel-header">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <FontIcon iconLiteral="fas-ticket-alt" iconSize="16" styleClass="header-icon"/>
+            <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                <Label fx:id="lblTicketInfo" styleClass="header-title" text="Ticket: —"/>
+                <Label fx:id="lblUsuario" styleClass="header-subtitle" text="Usuario: —"/>
+            </VBox>
+            <VBox spacing="2.0" alignment="CENTER_RIGHT">
+                <Label fx:id="lblTipo" styleClass="section-label" text="—"/>
                 <Label fx:id="lblMotivoOriginal" styleClass="motivo-label" text=""/>
-            </children>
-        </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
 
-        <Label styleClass="section-label" text="Diagnostico:"/>
+    <VBox VBox.vgrow="ALWAYS" spacing="0.0" styleClass="screen-body">
+        <Label styleClass="section-label" text="DIAGNOSTICO"/>
+        <Region prefHeight="8.0"/>
 
-        <ScrollPane fitToWidth="true" prefHeight="280.0" styleClass="scroll-dark">
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-dark">
             <content>
-                <VBox fx:id="contPreguntas" spacing="10.0" styleClass="preguntas-box"/>
+                <VBox fx:id="contPreguntas" spacing="12.0" styleClass="preguntas-box"/>
             </content>
         </ScrollPane>
 
-        <ProgressBar fx:id="barraSimulacion" visible="false" prefWidth="510.0" progress="0.0"/>
-        <Label fx:id="lblSimulacion" styleClass="muted-label" text=" "/>
+        <Region prefHeight="12.0"/>
 
-        <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <children>
-                <Button fx:id="btnIniciar" onAction="#iniciarSimulacion"
-                        prefHeight="38.0" prefWidth="170.0"
-                        styleClass="btn-iniciar"
-                        text="Iniciar Atencion"/>
-                <Button fx:id="btnFinalizar" onAction="#finalizar" disable="true"
-                        prefHeight="38.0" prefWidth="170.0"
-                        styleClass="btn-success"
-                        text="Finalizar y Enviar"/>
-            </children>
-        </HBox>
-    </children>
+        <ProgressBar fx:id="barraSimulacion" visible="false" maxWidth="Infinity" progress="0.0"/>
+        <Label fx:id="lblSimulacion" styleClass="muted-label" text=" "/>
+    </VBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="panel-footer">
+        <Button fx:id="btnIniciar" onAction="#iniciarSimulacion"
+                prefHeight="36.0"
+                styleClass="btn-primary"
+                text="Iniciar Atencion">
+            <graphic>
+                <FontIcon iconLiteral="fas-play-circle" iconSize="13" iconColor="#ffffff"/>
+            </graphic>
+        </Button>
+        <Button fx:id="btnFinalizar" onAction="#finalizar" disable="true"
+                prefHeight="36.0"
+                styleClass="btn-success"
+                text="Finalizar y Enviar">
+            <graphic>
+                <FontIcon iconLiteral="fas-check-circle" iconSize="13" iconColor="#ffffff"/>
+            </graphic>
+        </Button>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">
+            <graphic>
+                <FontIcon fx:id="iconTema" iconLiteral="fas-sun" iconSize="13" styleClass="icon-ghost"/>
+            </graphic>
+        </Button>
+    </HBox>
 </VBox>

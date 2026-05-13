@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\gdyna\\\\Desktop\\\\Proyecto Programacion III\\\\SistemadeSoporteTecnicoIT\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(New-Item *)",
+      "Bash(npx skills *)",
+      "Bash(node *)",
+      "Bash(python3 \"C:\\\\Users\\\\gdyna\\\\.claude\\\\plugins\\\\cache\\\\ui-ux-pro-max-skill\\\\ui-ux-pro-max\\\\2.5.0\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"IT support ticketing internal tool corporate dark desktop\" --design-system -p \"PC2 Soporte IT\" -f markdown)",
+      "Bash(py --version)",
+      "Bash(where python *)",
+      "Bash(python *)",
+      "Bash(Get-ChildItem *)",
+      "Bash(mvn dependency:resolve -q)"
+    ]
+  },
+  "enabledPlugins": {
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+  }
+}

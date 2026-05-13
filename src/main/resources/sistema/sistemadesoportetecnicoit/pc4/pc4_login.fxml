@@ -1,34 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="380.0" spacing="14.0"
+<VBox fx:id="screenRoot" prefHeight="380.0" prefWidth="420.0" spacing="0.0"
       styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc4.LoginController">
     <stylesheets>
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc4/pc4.css"/>
     </stylesheets>
-    <padding>
-        <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
-    </padding>
-    <children>
-        <Label styleClass="screen-title" text="PC4 - Soporte Prioritario"/>
-        <Label styleClass="screen-subtitle" text="Identifiquese para iniciar la sesion"/>
 
-        <TextField fx:id="txtNombre" promptText="Nombre del tecnico"
-                   styleClass="text-field-dark"/>
+    <VBox fx:id="panelHeader" spacing="4.0" styleClass="panel-header">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <FontIcon iconLiteral="fas-shield-alt" iconSize="18" styleClass="header-icon"/>
+            <VBox spacing="2.0">
+                <Label styleClass="header-title" text="PC4 — SOPORTE PRIORITARIO"/>
+                <Label styleClass="header-subtitle" text="Accesos · Incidente Critico"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <VBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="16.0" styleClass="screen-body">
+        <FontIcon iconLiteral="fas-user-shield" iconSize="48" styleClass="login-icon"/>
+        <Label styleClass="section-label" text="IDENTIFICACION DE TECNICO"/>
+        <Label styleClass="screen-subtitle" text="Ingrese su nombre para iniciar sesion"/>
+
+        <TextField fx:id="txtNombre" promptText="Nombre del tecnico" maxWidth="280.0"/>
 
         <Button onAction="#iniciar"
-                prefHeight="40.0" prefWidth="200.0"
+                prefHeight="42.0" prefWidth="200.0"
                 styleClass="btn-primary"
-                text="Iniciar Sesion"/>
+                text="Iniciar Sesion">
+            <graphic>
+                <FontIcon iconLiteral="fas-sign-in-alt" iconSize="14" iconColor="#ffffff"/>
+            </graphic>
+        </Button>
 
         <Label fx:id="lblError" styleClass="error-label" text=" "/>
-    </children>
+    </VBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+        <Label styleClass="footer-label" text="Sistema de Soporte Tecnico IT"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">
+            <graphic>
+                <FontIcon fx:id="iconTema" iconLiteral="fas-sun" iconSize="13" styleClass="icon-ghost"/>
+            </graphic>
+        </Button>
+    </HBox>
 </VBox>

@@ -11,8 +11,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="520.0" prefWidth="490.0" spacing="0.0"
+<VBox fx:id="screenRoot" prefHeight="520.0" prefWidth="490.0" spacing="0.0"
       styleClass="screen-root"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="sistema.sistemadesoportetecnicoit.pc2.RegistroController">
@@ -20,9 +21,14 @@
         <String fx:value="/sistema/sistemadesoportetecnicoit/pc2/pc2.css"/>
     </stylesheets>
 
-    <VBox spacing="5.0" styleClass="panel-header">
-        <Label styleClass="section-label" text="NUEVO TICKET"/>
-        <Label fx:id="lblTicketId" text="TK-0000"/>
+    <VBox fx:id="panelHeader" spacing="5.0" styleClass="panel-header">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <FontIcon iconLiteral="fas-ticket-alt" iconSize="16" styleClass="header-icon"/>
+            <VBox spacing="2.0">
+                <Label styleClass="section-label" text="NUEVO TICKET"/>
+                <Label fx:id="lblTicketId" styleClass="screen-title-md" text="TK-0000"/>
+            </VBox>
+        </HBox>
     </VBox>
 
     <VBox VBox.vgrow="ALWAYS" spacing="0.0" styleClass="screen-body">
@@ -71,14 +77,22 @@
         <Region prefHeight="20.0"/>
 
         <HBox alignment="CENTER_LEFT" spacing="10.0">
-            <Button onAction="#enviarTicket"
+            <Button fx:id="btnEnviar" onAction="#enviarTicket"
                     prefHeight="40.0" prefWidth="200.0"
                     styleClass="btn-primary"
-                    text="Enviar Ticket"/>
+                    text="Enviar Ticket">
+                <graphic>
+                    <FontIcon iconLiteral="fas-paper-plane" iconSize="14" iconColor="#ffffff"/>
+                </graphic>
+            </Button>
             <Button onAction="#regresarMenu"
                     prefHeight="40.0" prefWidth="110.0"
                     styleClass="btn-secondary-sm"
-                    text="Regresar"/>
+                    text="Regresar">
+                <graphic>
+                    <FontIcon iconLiteral="fas-chevron-left" iconSize="12" styleClass="icon-secondary"/>
+                </graphic>
+            </Button>
         </HBox>
 
         <Region prefHeight="10.0"/>
@@ -86,4 +100,13 @@
         <Label fx:id="lblEstado" text=" "/>
 
     </VBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="panel-footer">
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#toggleTema" styleClass="btn-ghost-sm" prefHeight="28.0">
+            <graphic>
+                <FontIcon fx:id="iconTema" iconLiteral="fas-sun" iconSize="13" styleClass="icon-ghost"/>
+            </graphic>
+        </Button>
+    </HBox>
 </VBox>

@@ -17,6 +17,18 @@
 
     <dependencies>
 
+        <!-- ── Ikonli — iconos FontAwesome 5 en JavaFX ── -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>12.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-fontawesome5-pack</artifactId>
+            <version>12.3.1</version>
+        </dependency>
+
         <!-- ── JavaFX sin classifier (compilacion y javafx:run) ── -->
         <dependency>
             <groupId>org.openjfx</groupId>
