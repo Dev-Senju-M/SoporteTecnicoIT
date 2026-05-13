@@ -27,6 +27,11 @@ public class LoginController {
                 Cliente c = new Cliente();
                 c.startClient();
                 SesionPC5.setConexion(c);
+                c.enviar(new sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje(
+                        sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje.CHAT_MENSAJE,
+                        "PC5 conectada (Administrador: " + nombre + ")",
+                        "PC5"
+                ));
                 System.out.println("Nueva conexion creada.");
             } else{
                 System.out.println("Usando conexion existente.");
