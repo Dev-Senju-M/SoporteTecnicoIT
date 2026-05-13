@@ -39,15 +39,25 @@ public class MenuController {
         actualizarIconTema();
 
         lblServidor.setText("Servidor: " + Configuracion.HOST + ":" + Configuracion.PUERTO_PC1);
-        if (SesionPC2.getConexion() == null) {
+        if (SesionPC2.getConexion() == null){
             new Thread(() -> {
-                try {
+                try{
                     Cliente cli = new Cliente();
                     cli.startClient();
                     SesionPC2.setConexion(cli);
+
+                    sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje saludo =
+                            new sistema.sistemadesoportetecnicoit.shared.protocolo.Mensaje(
+                                    sistema.sistemadesoportetecnicoit.shared.protocolo.TipoMensaje.CHAT_MENSAJE,
+                                    "Sistema PC2 Iniciado",
+                                    "PC2"
+                            );
+                    cli.enviar(saludo);
+
                     Platform.runLater(() ->
                             lblServidor.setText("Servidor: Conectado a " + Configuracion.HOST));
-                } catch (IOException e) {
+
+                } catch(IOException e){
                     Platform.runLater(() ->
                             lblServidor.setText("Servidor: DESCONECTADO (Error)"));
                     System.err.println("PC2 no pudo conectar al iniciar: " + e.getMessage());
