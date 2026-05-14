@@ -86,7 +86,6 @@
     <build>
         <plugins>
 
-            <!-- ── Compilador Java 21 ── -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -97,7 +96,6 @@
                 </configuration>
             </plugin>
 
-            <!-- ── Para desarrollo: mvn javafx:run ── -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
