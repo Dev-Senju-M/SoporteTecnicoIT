@@ -15,21 +15,15 @@
     <stylesheets>
         <String fx:value="/sistema/sistemadesoportetecnicoit/shared/chat/chat.css"/>
     </stylesheets>
-
-    <!-- Encabezado -->
     <VBox spacing="2.0" styleClass="chat-header">
         <Label styleClass="chat-title" text="CHAT — SOPORTE TECNICO IT"/>
         <Label styleClass="chat-subtitle" text="Mensajes visibles por todas las estaciones conectadas"/>
     </VBox>
-
-    <!-- Área de mensajes -->
     <TextArea fx:id="areaChat"
               VBox.vgrow="ALWAYS"
               editable="false"
               wrapText="true"
               styleClass="chat-area"/>
-
-    <!-- Barra de entrada -->
     <HBox spacing="8.0" styleClass="input-bar" alignment="CENTER_LEFT">
         <TextField fx:id="txtMensaje"
                    HBox.hgrow="ALWAYS"

@@ -41,7 +41,6 @@ public class RegistroController {
 
     @FXML
     public void initialize() {
-        // Animación de entrada
         screenRoot.setOpacity(0);
         panelHeader.setTranslateY(-12);
 
@@ -53,7 +52,6 @@ public class RegistroController {
 
         fade.play(); slide.play();
 
-        // Tema
         TemaManager.aplicar(screenRoot);
         actualizarIconTema();
 
